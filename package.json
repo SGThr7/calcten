@@ -1,0 +1,14 @@
+{
+  "name": "calcten",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": {
+    "name": "SGThr7",
+    "email": "sgthr7@gmail.com"
+  },
+  "license": "NOLICENSED"
+}
