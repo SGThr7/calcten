@@ -1,7 +1,8 @@
-import './style.sass'
+import Vue from 'vue'
+import App from './App.vue'
 
-function test(name: string) {
-	console.log(`hello ${name}`)
-}
-
-test('world')
+new Vue({
+	el: '#game',
+	components: { App },
+	template: '<app />',
+})
