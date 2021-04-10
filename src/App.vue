@@ -1,7 +1,7 @@
 <template>
 	<div class="game-area">
-		<display :operators="operators"></display>
-		<controller :operators="operators.slice(1)"></controller>
+		<display></display>
+		<controller></controller>
 	</div>
 </template>
 
@@ -12,9 +12,6 @@ import Controller from './components/Controler.vue'
 
 export default Vue.extend({
 	components: { Display, Controller },
-	computed: {
-		operators: () => ['', '+', '−', '×', '÷'],
-	},
 })
 </script>
 

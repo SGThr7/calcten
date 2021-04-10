@@ -3,5 +3,6 @@
 		"sourceMap": true,
 		"target": "ES6",
 		"module": "CommonJS",
+		"noImplicitAny": true
 	},
 }

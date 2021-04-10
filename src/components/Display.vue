@@ -1,11 +1,11 @@
 <template>
 	<div class="display">
 		<div class="calc-area" :style="styleVars">
-			<template v-for="n in numCount - 1">
+			<template v-for="n in numsCount - 1">
 				<div class="nums" :key="n.id">{{ n }}</div>
-				<div class="ops" :key="n.id">{{ operators[n] }}</div>
+				<div class="ops" :key="n.id">{{ ops[n] }}</div>
 			</template>
-			<div class="nums">{{ numCount }}</div>
+			<div class="nums">{{ numsCount }}</div>
 		</div>
 		<div class="result-area">
 			<span class="equal">=</span>
@@ -17,18 +17,16 @@
 <script lang="ts">
 import Vue from 'vue'
 export default Vue.extend({
-	props: {
-		operators: {
-			type: Array,
-			required: true,
-		},
-	},
 	data: () => ({
-		numCount: 4,
+		numsCount: 4,
 	}),
 	computed: {
 		styleVars() {
-			return { '--numCount': this.numCount }
+			return { '--numsCount': this.numsCount }
+		},
+		ops() {
+			return this.$store.state.ops
+		},
 		},
 	},
 })
