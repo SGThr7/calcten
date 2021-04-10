@@ -2,14 +2,14 @@
 	<div class="display">
 		<div class="calc-area" :style="styleVars">
 			<template v-for="n in numsCount - 1">
-				<div class="nums" :key="n.id">{{ n }}</div>
-				<div class="ops" :key="n.id">{{ ops[n] }}</div>
+				<div class="nums" :key="n.id">{{ nums[n - 1] }}</div>
+				<div class="ops" :key="n.id">{{ opsSample[ops[n - 1]] }}</div>
 			</template>
-			<div class="nums">{{ numsCount }}</div>
+			<div class="nums">{{ nums[numsCount - 1] }}</div>
 		</div>
 		<div class="result-area">
 			<span class="equal">=</span>
-			<span class="result">10</span>
+			<span class="result">{{ result }}</span>
 		</div>
 	</div>
 </template>
@@ -19,6 +19,7 @@ import Vue from 'vue'
 export default Vue.extend({
 	data: () => ({
 		numsCount: 4,
+		nums: [] as number[],
 	}),
 	computed: {
 		styleVars() {
@@ -27,7 +28,35 @@ export default Vue.extend({
 		ops() {
 			return this.$store.state.ops
 		},
+		opsSample() {
+			return this.$store.state.opsSample
 		},
+		opsFunc() {
+			return this.$store.state.opsFunc
+		},
+		result() {
+			let res = this.nums[0]
+			for (let i = 1; i < this.numsCount; i++) {
+				res = this.opsFunc[this.ops[i - 1] ?? 0](res, this.nums[i])
+			}
+			return res
+		},
+	},
+	methods: {
+		refreshNums(numsCount: number): void {
+			let res = []
+			for (let i = 0; i < numsCount; i++) {
+				res[i] = Math.ceil(Math.random() * 10)
+			}
+			this.nums = res
+		},
+		inputOps(operatorID: number) {
+			return this.$store.commit('inputOps', operatorID)
+		},
+	},
+	created() {
+		this.refreshNums(this.numsCount)
+		this.inputOps(1)
 	},
 })
 </script>
@@ -42,7 +71,7 @@ export default Vue.extend({
 
 .calc-area
 	display: grid
-	grid-template-columns: repeat(calc(var(--numCount) * 2 - 1), 1fr)
+	grid-template-columns: repeat(calc(var(--numsCount) * 2 - 1), 1fr)
 	place-items: center
 	align-self: end
 
