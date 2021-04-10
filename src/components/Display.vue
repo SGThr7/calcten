@@ -46,7 +46,7 @@ export default Vue.extend({
 		refreshNums(numsCount: number): void {
 			let res = []
 			for (let i = 0; i < numsCount; i++) {
-				res[i] = Math.ceil(Math.random() * 10)
+				res[i] = Math.floor(Math.random() * 10)
 			}
 			this.nums = res
 		},
