@@ -1,9 +1,11 @@
 <template>
 	<div class="display">
 		<div class="calc-area" :style="styleVars">
-			<template v-for="n in numsCount - 1">
-				<div class="nums" :key="n.id">{{ nums[n - 1] }}</div>
-				<div class="ops" :key="n.id">{{ opsSample[ops[n - 1]] }}</div>
+			<template v-for="(_, n) in numsCount - 1">
+				<div class="nums" :key="n.id">{{ nums[n] }}</div>
+				<div class="ops" :key="n.id">
+					{{ inputOpsString[n] }}
+				</div>
 			</template>
 			<div class="nums">{{ nums[numsCount - 1] }}</div>
 		</div>
@@ -22,31 +24,25 @@ export default Vue.extend({
 	}),
 	computed: {
 		numsCount() {
-			return this.$store.state.opsCount + 1
+			return this.$store.state.inputOpsCount + 1
 		},
 		styleVars() {
 			return { '--numsCount': this.numsCount }
 		},
-		ops() {
-			return this.$store.state.ops
+		inputOpsID() {
+			return this.$store.state.inputOpsID
 		},
-		opsString() {
-			return this.$store.getters.opsString
+		inputOpsString() {
+			return this.$store.getters.inputOpsString
 		},
-		opsLimit() {
-			return this.$store.state.opsCount
+		inputOpsCount() {
+			return this.$store.state.inputOpsCount
 		},
-		opsData() {
-			return this.$store.state.opsData
-		},
-		opsSample() {
-			return this.$store.state.opsSample
-		},
-		opsFunc() {
-			return this.$store.state.opsFunc
+		opData() {
+			return this.$store.state.opData
 		},
 		result() {
-			const rpn = this.toRPN(this.nums, this.opsString)
+			const rpn = this.toRPN(this.nums, this.inputOpsString)
 			const res = this.calcRPN(rpn)
 			return res
 		},
@@ -59,34 +55,34 @@ export default Vue.extend({
 			}
 			this.nums = res
 		},
-		inputOps(operatorID: number) {
-			return this.$store.commit('inputOps', operatorID)
+		setOpID(operatorID: number) {
+			return this.$store.commit('setOpID', operatorID)
 		},
 		toRPN(nums: number[], ops: string[]) {
 			const rpn: (number | string)[] = []
-			const opstack: string[] = []
+			const opStack: string[] = []
 			const opspart = (op: string) => {
-				const lastStack = opstack[opstack.length - 1]
+				const lastStack = opStack[opStack.length - 1]
 				if (
 					lastStack &&
-					this.opsData[lastStack].priority >= this.opsData[op].priority
+					this.opData[lastStack].priority >= this.opData[op].priority
 				) {
-					rpn.push(opstack.pop())
+					rpn.push(opStack.pop())
 					opspart(op)
 				} else {
-					opstack.push(op)
+					opStack.push(op)
 				}
 			}
-			for (let i = 0; i < this.opsLimit; i++) {
+			for (let i = 0; i < this.inputOpsCount; i++) {
 				// nums part
 				rpn.push(nums[i])
 				// ops part
 				opspart(ops[i] ?? '')
 			}
 			// last num
-			rpn.push(nums[this.opsLimit])
-			while (opstack.length > 0) {
-				rpn.push(opstack.pop())
+			rpn.push(nums[this.inputOpsCount])
+			while (opStack.length > 0) {
+				rpn.push(opStack.pop())
 			}
 			return rpn
 		},
@@ -97,7 +93,7 @@ export default Vue.extend({
 				if (typeof tmp === 'number') {
 					stack.push(tmp)
 				} else if (typeof tmp === 'string') {
-					const func = this.opsData[tmp].func
+					const func = this.opData[tmp].func
 					const rhs = stack.pop()
 					const lhs = stack.pop()
 					const ans = func(lhs, rhs)
@@ -109,7 +105,6 @@ export default Vue.extend({
 	},
 	created() {
 		this.refreshNums(this.numsCount)
-		this.inputOps(1)
 	},
 })
 </script>

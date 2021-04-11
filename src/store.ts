@@ -20,9 +20,9 @@ const enum Operator {
 export default new Vuex.Store({
 	strict: process.env.NODE_ENV !== 'production',
 	state: {
-		opsCount: 3,
-		ops: [] as number[],
-		opsData: {
+		inputOpsCount: 3,
+		inputOpsID: [] as number[],
+		opData: {
 			[Operator.none]: {
 				priority: 100,
 				func: (a, b) => a,
@@ -44,34 +44,27 @@ export default new Vuex.Store({
 				func: (a, b) => a / b,
 			},
 		} as TOpsData,
-		opsSample: [
+		opList: [
 			Operator.none,
 			Operator.plus,
 			Operator.minus,
 			Operator.times,
 			Operator.div,
 		],
-		opsFunc: [
-			(a, b) => a,
-			(a, b) => a + b,
-			(a, b) => a - b,
-			(a, b) => a * b,
-			(a, b) => a / b,
-		] as ((a: number, b: number) => number)[],
 	},
 	mutations: {
-		inputOps(state, operatorID) {
-			let index = state.ops.length
-			if (index < state.opsCount) {
-				Vue.set(state.ops, index, operatorID)
+		setOpID(state, operatorID) {
+			let index = state.inputOpsID.length
+			if (index < state.inputOpsCount) {
+				Vue.set(state.inputOpsID, index, operatorID)
 			} else {
-				Vue.set(state.ops, state.opsCount - 1, operatorID)
+				Vue.set(state.inputOpsID, state.inputOpsCount - 1, operatorID)
 			}
 		},
 	},
 	getters: {
-		opsString(state) {
-			return state.ops.map((id: number) => state.opsSample[id])
+		inputOpsString(state) {
+			return state.inputOpsID.map((id: number) => state.opList[id])
 		},
 	},
 	actions: {},
