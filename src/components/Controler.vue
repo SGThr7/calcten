@@ -1,8 +1,8 @@
 <template>
 	<div class="controller-area" :style="styleVars">
-		<template v-for="op in opsSample">
-			<div class="input-wrapper" :key="op.id">
-				<input type="button" class="ops" :value="op" />
+		<template v-for="(op, i) in opsSample">
+			<div class="input-wrapper" :key="op.id" v-if="op">
+				<input type="button" class="ops" :value="op" @click="inputOps(i)" />
 			</div>
 		</template>
 	</div>
@@ -18,7 +18,12 @@ export default Vue.extend({
 			}
 		},
 		opsSample() {
-			return this.$store.state.opsSample.slice(1)
+			return this.$store.state.opsSample
+		},
+	},
+	methods: {
+		inputOps(operatorID: number) {
+			return this.$store.commit('inputOps', operatorID)
 		},
 	},
 })

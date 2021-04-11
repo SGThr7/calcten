@@ -20,10 +20,10 @@ export default new Vuex.Store({
 	mutations: {
 		inputOps(state, operatorID) {
 			let index = state.ops.length
-			if (index < state.opscount) {
-				state.ops[index] = operatorID
+			if (index < state.opsCount) {
+				Vue.set(state.ops, index, operatorID)
 			} else {
-				state.ops[state.opscount - 1] = operatorID
+				Vue.set(state.ops, state.opsCount - 1, operatorID)
 			}
 		},
 	},
