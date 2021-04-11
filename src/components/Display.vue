@@ -30,6 +30,15 @@ export default Vue.extend({
 		ops() {
 			return this.$store.state.ops
 		},
+		opsString() {
+			return this.$store.getters.opsString
+		},
+		opsLimit() {
+			return this.$store.state.opsCount
+		},
+		opsData() {
+			return this.$store.state.opsData
+		},
 		opsSample() {
 			return this.$store.state.opsSample
 		},
@@ -37,10 +46,8 @@ export default Vue.extend({
 			return this.$store.state.opsFunc
 		},
 		result() {
-			let res = this.nums[0]
-			for (let i = 1; i < this.numsCount; i++) {
-				res = this.opsFunc[this.ops[i - 1] ?? 0](res, this.nums[i])
-			}
+			const rpn = this.toRPN(this.nums, this.opsString)
+			const res = this.calcRPN(rpn)
 			return res
 		},
 	},
@@ -54,6 +61,50 @@ export default Vue.extend({
 		},
 		inputOps(operatorID: number) {
 			return this.$store.commit('inputOps', operatorID)
+		},
+		toRPN(nums: number[], ops: string[]) {
+			const rpn: (number | string)[] = []
+			const opstack: string[] = []
+			const opspart = (op: string) => {
+				const lastStack = opstack[opstack.length - 1]
+				if (
+					lastStack &&
+					this.opsData[lastStack].priority >= this.opsData[op].priority
+				) {
+					rpn.push(opstack.pop())
+					opspart(op)
+				} else {
+					opstack.push(op)
+				}
+			}
+			for (let i = 0; i < this.opsLimit; i++) {
+				// nums part
+				rpn.push(nums[i])
+				// ops part
+				opspart(ops[i] ?? '')
+			}
+			// last num
+			rpn.push(nums[this.opsLimit])
+			while (opstack.length > 0) {
+				rpn.push(opstack.pop())
+			}
+			return rpn
+		},
+		calcRPN(rpn: (number | string)[]) {
+			const stack: number[] = []
+			for (let i = 0; i < rpn.length; i++) {
+				const tmp = rpn[i]
+				if (typeof tmp === 'number') {
+					stack.push(tmp)
+				} else if (typeof tmp === 'string') {
+					const func = this.opsData[tmp].func
+					const rhs = stack.pop()
+					const lhs = stack.pop()
+					const ans = func(lhs, rhs)
+					stack.push(ans)
+				}
+			}
+			return stack.pop()
 		},
 	},
 	created() {
