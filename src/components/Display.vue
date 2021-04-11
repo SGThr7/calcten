@@ -44,7 +44,7 @@ export default Vue.extend({
 		result() {
 			const rpn = this.toRPN(this.nums, this.inputOpsString)
 			const res = this.calcRPN(rpn)
-			return res
+			return Math.round(res * 100) / 100
 		},
 	},
 	methods: {
