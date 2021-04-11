@@ -18,10 +18,12 @@
 import Vue from 'vue'
 export default Vue.extend({
 	data: () => ({
-		numsCount: 4,
 		nums: [] as number[],
 	}),
 	computed: {
+		numsCount() {
+			return this.$store.state.opsCount + 1
+		},
 		styleVars() {
 			return { '--numsCount': this.numsCount }
 		},

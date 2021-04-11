@@ -1,6 +1,6 @@
 <template>
 	<div class="controller-area" :style="styleVars">
-		<template v-for="op in ops">
+		<template v-for="op in opsSample">
 			<div class="input-wrapper" :key="op.id">
 				<input type="button" class="ops" :value="op" />
 			</div>
@@ -14,11 +14,11 @@ export default Vue.extend({
 	computed: {
 		styleVars() {
 			return {
-				'--opsCount': this.ops.length,
+				'--opsCount': 4,
 			}
 		},
-		ops() {
-			return this.$store.state.ops.slice(1)
+		opsSample() {
+			return this.$store.state.opsSample.slice(1)
 		},
 	},
 })
