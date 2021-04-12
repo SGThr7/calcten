@@ -32,6 +32,8 @@ body
 	width: 100%
 	max-height: 500px
 	max-width: 400px
+	padding: 10px
+	box-sizing: border-box
 
 	font-size: min(1rem, 4vw)
 	text-align: center

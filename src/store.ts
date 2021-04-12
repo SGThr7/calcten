@@ -61,6 +61,9 @@ export default new Vuex.Store({
 				Vue.set(state.inputOpsID, state.inputOpsCount - 1, operatorID)
 			}
 		},
+		removeOp(state) {
+			state.inputOpsID.pop()
+		},
 	},
 	getters: {
 		inputOpsString(state) {

@@ -1,5 +1,14 @@
 <template>
-	<div class="controller-area" :style="styleVars">
+	<div class="controller-area button-grid" :style="styleVars">
+		<div class="empty"></div>
+		<div class="input-wrapper">
+			<input
+				type="button"
+				class="delete-button"
+				value="←"
+				@click="removeOp()"
+			/>
+		</div>
 		<template v-for="(op, i) in opList">
 			<div class="input-wrapper" :key="op.id" v-if="op">
 				<input type="button" class="ops" :value="op" @click="setOpID(i)" />
@@ -25,20 +34,32 @@ export default Vue.extend({
 		setOpID(operatorID: number) {
 			return this.$store.commit('setOpID', operatorID)
 		},
+		removeOp() {
+			return this.$store.commit('removeOp')
+		},
 	},
 })
 </script>
 
 <style lang="sass" scoped>
+.empty
+	grid-column: 1 / 4
+
 .controller-area
-	height: 100%
 	width: 100%
+
 	display: grid
 	grid-template-columns: repeat(var(--opsCount), 1fr)
 	place-items: center
+	--gap-size: 10px
+	grid-gap: var(--gap-size)
+	gap: var(--gap-size)
+
+	.delete-button
+		align-self: end
 
 	.input-wrapper
-		width: 80%
+		width: 100%
 		position: relative
 
 		&::before
@@ -46,13 +67,13 @@ export default Vue.extend({
 			display: block
 			padding-top: 100%
 
-		input.ops
-			height: 100%
-			width: 100%
-			position: absolute
-			top: 0
-			left: 0
-			-webkit-appearance: none
-			font-size: 2em
-			padding: 0
+	input
+		height: 100%
+		width: 100%
+		position: absolute
+		top: 0
+		left: 0
+		-webkit-appearance: none
+		font-size: 2em
+		padding: 0
 </style>
