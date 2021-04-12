@@ -16,7 +16,8 @@ export default Vue.extend({
 </script>
 
 <style lang="sass">
-@import url('https://fonts.googleapis.com/css2?family=New+Tegomin&display=swap&text=%2B%E2%88%92%C3%97%C3%B7%3D0123456789')
+// text memo: 0123456789(＋−×÷=)
+@import url('https://fonts.googleapis.com/css2?family=New+Tegomin&display=swap')
 
 html, body
 	height: 100%

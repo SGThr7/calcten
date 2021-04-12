@@ -11,7 +11,7 @@ type TOpsData = {
 }
 const enum Operator {
 	none = '',
-	plus = '+',
+	plus = '＋',
 	minus = '−',
 	times = '×',
 	div = '÷',
