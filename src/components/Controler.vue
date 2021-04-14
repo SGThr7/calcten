@@ -38,7 +38,7 @@ import { mapGetters, mapMutations } from 'vuex'
 
 export default Vue.extend({
 	computed: {
-		...mapGetters('input', ['opList', 'bracketList']),
+		...mapGetters('input', ['count', 'opList', 'bracketList']),
 		styleVars() {
 			return {
 				'--opsCount': 4,
@@ -53,7 +53,7 @@ export default Vue.extend({
 
 <style lang="sass" scoped>
 .empty
-	grid-column: 3 / span 1
+	grid-column: 3 / span calc(var(--opsCount) - 3)
 
 .controller-area
 	width: 100%
