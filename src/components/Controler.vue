@@ -20,7 +20,7 @@
 			/>
 		</div>
 		<template v-for="op in opList">
-			<div class="input-wrapper" :key="op.id" v-if="op">
+			<div class="input-wrapper" :key="op.id">
 				<input
 					type="button"
 					class="ops"

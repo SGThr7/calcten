@@ -2,7 +2,7 @@ import { Module } from 'vuex'
 import rootState from '@/store'
 
 const Operator = {
-	none: '',
+	none: '＿',
 	plus: '＋',
 	minus: '−',
 	times: '×',
@@ -73,7 +73,6 @@ const store: Module<state, typeof rootState> = {
 	getters: {
 		count: ({ count }) => count,
 		opList: () => [
-			Operator.none,
 			Operator.plus,
 			Operator.minus,
 			Operator.times,
@@ -140,17 +139,14 @@ const store: Module<state, typeof rootState> = {
 			return res
 		},
 		rpn(state, { formula, opData }: { formula: string[]; opData: OpData }) {
-			const tmptoken = '_'
 			const f = formula
-				.map((token) => (token === Operator.none ? tmptoken : token))
 				.join('')
 				.split('')
 				.map((token) =>
 					isNaN(parseInt(token, 10))
-						? (token as FormulaSign | typeof tmptoken)
+						? (token as FormulaSign)
 						: parseInt(token, 10)
 				)
-				.map((token) => (token === tmptoken ? Operator.none : token))
 			const nlparen = f.filter((token) => token === Bracket.lparen).length
 			const nrparen = f.filter((token) => token === Bracket.rparen).length
 			for (let i = 0; i < nlparen - nrparen; i++) {
