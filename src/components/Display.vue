@@ -1,53 +1,42 @@
 <template>
 	<div class="display">
 		<div class="calc-area" :style="styleVars">
-			<template v-for="(_, n) in numsCount - 1">
-				<div class="nums" :key="n.id">{{ nums[n] }}</div>
-				<div class="ops" :key="n.id">
-					{{ inputOpsString[n] }}
+			<template v-for="(token, i) in formula">
+				<div class="nums" :key="token.id" v-if="i % 2 === 0">
+					{{ token }}
+				</div>
+				<div class="ops" :key="token.id" v-if="i % 2 === 1">
+					{{ token }}
 				</div>
 			</template>
-			<div class="nums">{{ nums[numsCount - 1] }}</div>
 		</div>
-		<div class="result-area">
+		<div class="answer-area">
 			<span class="equal">=</span>
-			<span class="result">{{ result }}</span>
+			<span class="answer">{{ answer }}</span>
 		</div>
 	</div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue'
+import { mapGetters, mapMutations } from 'vuex'
+
 export default Vue.extend({
 	data: () => ({
 		nums: [] as number[],
 	}),
 	computed: {
-		numsCount() {
-			return this.$store.state.inputOpsCount + 1
-		},
+		...mapGetters('input', {
+			numsCount: 'count',
+			formula: 'formula',
+			answer: 'answer',
+		}),
 		styleVars() {
 			return { '--numsCount': this.numsCount }
 		},
-		inputOpsID() {
-			return this.$store.state.inputOpsID
-		},
-		inputOpsString() {
-			return this.$store.getters.inputOpsString
-		},
-		inputOpsCount() {
-			return this.$store.state.inputOpsCount
-		},
-		opData() {
-			return this.$store.state.opData
-		},
-		result() {
-			const rpn = this.toRPN(this.nums, this.inputOpsString)
-			const res = this.calcRPN(rpn)
-			return Math.round(res * 100) / 100
-		},
 	},
 	methods: {
+		...mapMutations('input', ['refresh']),
 		refreshNums(numsCount: number): void {
 			let res = []
 			for (let i = 0; i < numsCount; i++) {
@@ -65,7 +54,7 @@ export default Vue.extend({
 				const lastStack = opStack[opStack.length - 1]
 				if (
 					lastStack &&
-					this.opData[lastStack].priority >= this.opData[op].priority
+					this.opsData[lastStack].priority >= this.opsData[op].priority
 				) {
 					rpn.push(opStack.pop())
 					opspart(op)
@@ -93,7 +82,7 @@ export default Vue.extend({
 				if (typeof tmp === 'number') {
 					stack.push(tmp)
 				} else if (typeof tmp === 'string') {
-					const func = this.opData[tmp].func
+					const func = this.opsData[tmp].func
 					const rhs = stack.pop()
 					const lhs = stack.pop()
 					const ans = func(lhs, rhs)
@@ -104,6 +93,7 @@ export default Vue.extend({
 		},
 	},
 	created() {
+		this.refresh()
 		this.refreshNums(this.numsCount)
 	},
 })
@@ -129,13 +119,13 @@ export default Vue.extend({
 	.ops
 		font-size: 2em
 
-.result-area
+.answer-area
 	align-self: start
 	padding-top: 1em
 
 	.equal
 		font-size: 2em
 
-	.result
+	.answer
 		font-size: 3em
 </style>

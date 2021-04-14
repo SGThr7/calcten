@@ -3,6 +3,11 @@
 		"sourceMap": true,
 		"target": "ES6",
 		"module": "CommonJS",
-		"noImplicitAny": true
+		"noImplicitAny": true,
+		"paths": {
+			"@/*": [
+				"./src/*"
+			]
+		}
 	},
 }

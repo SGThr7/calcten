@@ -13,6 +13,7 @@
   },
   "license": "NOLICENSED",
   "devDependencies": {
+    "@types/webpack-env": "^1.16.0",
     "css-loader": "^5.2.0",
     "html-webpack-plugin": "^5.3.1",
     "sass": "^1.32.8",

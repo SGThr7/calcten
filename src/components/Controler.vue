@@ -1,17 +1,32 @@
 <template>
 	<div class="controller-area button-grid" :style="styleVars">
+		<template v-for="bracket in bracketList">
+			<div class="input-wrapper" :key="bracket.id">
+				<input
+					type="button"
+					:value="bracket"
+					class="bracket-button"
+					@click="add({ sign: bracket })"
+				/>
+			</div>
+		</template>
 		<div class="empty"></div>
 		<div class="input-wrapper">
 			<input
 				type="button"
 				class="delete-button"
 				value="←"
-				@click="removeOp()"
+				@click="remove()"
 			/>
 		</div>
-		<template v-for="(op, i) in opList">
+		<template v-for="op in opList">
 			<div class="input-wrapper" :key="op.id" v-if="op">
-				<input type="button" class="ops" :value="op" @click="setOpID(i)" />
+				<input
+					type="button"
+					class="ops"
+					:value="op"
+					@click="add({ sign: op })"
+				/>
 			</div>
 		</template>
 	</div>
@@ -19,31 +34,26 @@
 
 <script lang="ts">
 import Vue from 'vue'
+import { mapGetters, mapMutations } from 'vuex'
+
 export default Vue.extend({
 	computed: {
+		...mapGetters('input', ['opList', 'bracketList']),
 		styleVars() {
 			return {
 				'--opsCount': 4,
 			}
 		},
-		opList() {
-			return this.$store.state.opList
-		},
 	},
 	methods: {
-		setOpID(operatorID: number) {
-			return this.$store.commit('setOpID', operatorID)
-		},
-		removeOp() {
-			return this.$store.commit('removeOp')
-		},
+		...mapMutations('input', ['add', 'remove']),
 	},
 })
 </script>
 
 <style lang="sass" scoped>
 .empty
-	grid-column: 1 / 4
+	grid-column: 3 / span 1
 
 .controller-area
 	width: 100%
