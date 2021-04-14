@@ -12,7 +12,7 @@
 		</div>
 		<div class="answer-area">
 			<span class="equal">=</span>
-			<span class="answer">{{ answer }}</span>
+			<span class="answer">{{ Math.floor(answer * 100) / 100 }}</span>
 		</div>
 	</div>
 </template>
