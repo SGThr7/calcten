@@ -99,7 +99,6 @@ const store: Module<state, typeof rootState> = {
 		formula(state) {
 			const nums = state.nums.slice(0)
 			const ops = state.ops.slice(0)
-			console.log(ops)
 			const res: string[] = []
 			let o = ops.shift()
 			let n = nums.shift()?.toString(10)
