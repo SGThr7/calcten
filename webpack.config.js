@@ -1,5 +1,6 @@
 const path = require('path')
 const HTMLWebpackPlugin = require('html-webpack-plugin')
+const VueLoaderPlugin = require('vue-loader/lib/plugin')
 
 module.exports = {
 	mode: 'development',
@@ -12,20 +13,43 @@ module.exports = {
 		rules: [
 			{
 				test: /\.ts$/,
-				use: 'ts-loader',
+				loader: 'ts-loader',
+				options: {
+					appendTsSuffixTo: [/\.vue$/],
+				},
 			},
 			{
 				test: /\.s[ac]ss$/,
-				use: ['style-loader', 'css-loader', 'sass-loader'],
+				use: [
+					'style-loader',
+					'css-loader',
+					{
+						loader: 'sass-loader',
+						options: {
+							sassOptions: {
+								indentedSyntax: true,
+							},
+						},
+					},
+				],
+			},
+			{
+				test: /\.vue$/,
+				loader: 'vue-loader',
 			},
 		],
 	},
 	resolve: {
 		extensions: ['.ts', '.js'],
+		alias: {
+			vue$: 'vue/dist/vue.esm.js',
+			'@': path.join(__dirname, 'src'),
+		},
 	},
 	plugins: [
 		new HTMLWebpackPlugin({
 			template: './src/index.html',
 		}),
+		new VueLoaderPlugin(),
 	],
 }
