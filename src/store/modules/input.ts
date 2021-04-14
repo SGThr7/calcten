@@ -54,6 +54,13 @@ const store: Module<state, typeof rootState> = {
 				const nrparen = state.ops.filter((o) => o === Bracket.rparen).length
 				if (nlparen - nrparen > 0) {
 					return state.ops.push(sign)
+				} else {
+					const nop = state.ops.filter((o) =>
+						Object.values<Object>(Operator).includes(o)
+					).length
+					if (nop < state.count - 1) {
+						return state.ops.push(Bracket.lparen, sign)
+					}
 				}
 			} else {
 				return state.ops.push(sign)
