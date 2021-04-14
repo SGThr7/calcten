@@ -36,19 +36,20 @@ const store: Module<state, typeof rootState> = {
 			const nop = state.ops.filter((o) =>
 				Object.values<Object>(Operator).includes(o)
 			).length
+			const nlparen = state.ops.filter((o) => o === Bracket.lparen).length
+			const opTop = state.ops[state.ops.length - 1]
 			if (sign === Bracket.lparen) {
-				if (nop < state.count - 1) {
+				if (
+					Math.min(state.count - 1 - nlparen, state.count - 1 - nop) &&
+					opTop !== Bracket.rparen
+				) {
 					return state.ops.push(sign)
 				}
 			} else if (sign === Bracket.rparen) {
 				const nlparen = state.ops.filter((o) => o === Bracket.lparen).length
 				const nrparen = state.ops.filter((o) => o === Bracket.rparen).length
-				if (nlparen - nrparen > 0) {
+				if (nlparen > nrparen && opTop !== Bracket.lparen) {
 					return state.ops.push(sign)
-				} else {
-					if (nop < state.count - 1) {
-						return state.ops.push(Bracket.lparen, sign)
-					}
 				}
 			} else {
 				if (nop < state.count - 1) {
@@ -72,25 +73,17 @@ const store: Module<state, typeof rootState> = {
 			const res: string[] = []
 			let o = ops.shift()
 			let n = nums.shift()?.toString(10)
-			const rbracket = ['']
 			while (n) {
-				rbracket.push('')
 				while (o === Bracket.lparen) {
 					n = o + n
 					o = ops.shift()
 				}
 				while (o === Bracket.rparen) {
-					rbracket[1] += o
+					n += o
 					o = ops.shift()
 				}
 
-				if (n[0] === Bracket.lparen) {
-					const tmp = rbracket.shift()
-					rbracket[0] += tmp
-					res.push(n)
-				} else {
-					res.push(n + rbracket.shift())
-				}
+				res.push(n)
 				if (Object.values<Object>(Operator).includes(o)) {
 					res.push(o)
 				} else {
@@ -100,7 +93,7 @@ const store: Module<state, typeof rootState> = {
 				n = nums.shift()?.toString(10)
 			}
 			res.pop()
-			res.push(res.pop() + rbracket.shift())
+			res.push(res.pop())
 			return res
 		},
 		rpn(state, { formula, opData }: { formula: string[]; opData: OpData }) {
