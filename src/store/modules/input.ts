@@ -1,5 +1,6 @@
 import { Module } from 'vuex'
 import rootState from '@/store'
+import { isSolvable } from '@/solve'
 
 const Operator = {
 	none: '＿',
@@ -34,10 +35,13 @@ const store: Module<state, typeof rootState> = {
 	state,
 	mutations: {
 		refresh(state) {
-			const res = []
-			for (let i = 0; i < state.count; i++) {
-				res[i] = Math.floor(Math.random() * 10)
-			}
+			let res: number[]
+			do {
+				res = []
+				for (let i = 0; i < state.count; i++) {
+					res[i] = Math.floor(Math.random() * 10)
+				}
+			} while (!isSolvable(res))
 			state.nums = res
 			state.ops = []
 		},
