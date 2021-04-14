@@ -42,10 +42,10 @@ const store: Module<state, typeof rootState> = {
 			state.ops = []
 		},
 		add(state, { sign }: { sign: FormulaSign }) {
+			const nop = state.ops.filter((o) =>
+				Object.values<Object>(Operator).includes(o)
+			).length
 			if (sign === Bracket.lparen) {
-				const nop = state.ops.filter((o) =>
-					Object.values<Object>(Operator).includes(o)
-				).length
 				if (nop < state.count - 1) {
 					return state.ops.push(sign)
 				}
@@ -55,15 +55,14 @@ const store: Module<state, typeof rootState> = {
 				if (nlparen - nrparen > 0) {
 					return state.ops.push(sign)
 				} else {
-					const nop = state.ops.filter((o) =>
-						Object.values<Object>(Operator).includes(o)
-					).length
 					if (nop < state.count - 1) {
 						return state.ops.push(Bracket.lparen, sign)
 					}
 				}
 			} else {
-				return state.ops.push(sign)
+				if (nop < state.count - 1) {
+					return state.ops.push(sign)
+				}
 			}
 			return state.ops.push()
 		},
