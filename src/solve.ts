@@ -1,4 +1,4 @@
-import { opData, Operator } from '@/modules/operator'
+import { OpData, Operator } from '@/modules/operator'
 
 function genRPN(nums: number[], ops: Operator[]) {
 	const fn = (now: (number | Operator)[], nums: number[], ops: Operator[]) => {
@@ -22,7 +22,7 @@ function genRPN(nums: number[], ops: Operator[]) {
 	return Array.from(new Set(fn([], nums, ops))).map(toRPN)
 }
 
-function calc(rpn: (number | Operator)[]) {
+export function calc(rpn: (number | Operator)[]) {
 	rpn = rpn.slice()
 	const stack: number[] = []
 	let token = rpn.shift()
@@ -32,7 +32,7 @@ function calc(rpn: (number | Operator)[]) {
 		} else if (typeof token === 'string') {
 			const rhs = stack.pop()
 			const lhs = stack.pop()
-			const ans = opData[token].fn(lhs, rhs)
+			const ans = OpData[token].fn(lhs, rhs)
 			stack.push(ans)
 		}
 		token = rpn.shift()

@@ -1,27 +1,14 @@
 import { Module } from 'vuex'
 import rootState from '@/store'
-import { isSolvable } from '@/solve'
-
-const Operator = {
-	none: '＿',
-	plus: '＋',
-	minus: '−',
-	times: '×',
-	div: '÷',
-} as const
-type Operator = typeof Operator[keyof typeof Operator]
-const Bracket = {
-	lparen: '(',
-	rparen: ')',
-} as const
-type Bracket = typeof Bracket[keyof typeof Bracket]
-type FormulaSign = Operator | Bracket
-type OpData = {
-	[op in Operator]: {
-		priority: number
-		fn: (a: number, b: number) => number
-	}
-}
+import { calc, isSolvable } from '@/solve'
+import {
+	Bracket,
+	BracketList,
+	FormulaSign,
+	OpData,
+	Operator,
+	OpList,
+} from '@/modules/operator'
 
 const state = {
 	count: 4,
@@ -76,35 +63,9 @@ const store: Module<state, typeof rootState> = {
 	},
 	getters: {
 		count: ({ count }) => count,
-		opList: () => [
-			Operator.plus,
-			Operator.minus,
-			Operator.times,
-			Operator.div,
-		],
-		bracketList: () => [Bracket.lparen, Bracket.rparen],
-		opData: (): OpData => ({
-			[Operator.none]: {
-				priority: 100,
-				fn: (a, b) => a,
-			},
-			[Operator.plus]: {
-				priority: 1,
-				fn: (a, b) => a + b,
-			},
-			[Operator.minus]: {
-				priority: 1,
-				fn: (a, b) => a - b,
-			},
-			[Operator.times]: {
-				priority: 2,
-				fn: (a, b) => a * b,
-			},
-			[Operator.div]: {
-				priority: 2,
-				fn: (a, b) => a / b,
-			},
-		}),
+		opList: () => OpList,
+		bracketList: () => BracketList,
+		opData: () => OpData,
 		formula(state) {
 			const nums = state.nums.slice(0)
 			const ops = state.ops.slice(0)
@@ -194,25 +155,8 @@ const store: Module<state, typeof rootState> = {
 			}
 			return rpn
 		},
-		answer(
-			state,
-			{ rpn, opData }: { rpn: (number | Operator)[]; opData: OpData }
-		) {
-			const stack: number[] = []
-			let token = rpn.shift()
-			while (token !== undefined) {
-				if (typeof token === 'number') {
-					stack.push(token)
-				} else if (typeof token === 'string') {
-					const fn = opData[token].fn
-					const rhs = stack.pop()
-					const lhs = stack.pop()
-					const ans = fn(lhs, rhs)
-					stack.push(ans)
-				}
-				token = rpn.shift()
-			}
-			return stack.pop()
+		answer(state, { rpn }: { rpn: (number | Operator)[] }) {
+			return calc(rpn)
 		},
 	},
 }
