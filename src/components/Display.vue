@@ -14,7 +14,7 @@
 			<span class="equal">=</span>
 			<span class="answer">{{ Math.floor(answer * 100) / 100 }}</span>
 		</div>
-		<div class="overlay check-result">◯</div>
+		<div class="overlay check-result" v-show="checkResult">◯</div>
 	</div>
 </template>
 
@@ -24,7 +24,7 @@ import { mapGetters, mapMutations } from 'vuex'
 
 export default Vue.extend({
 	computed: {
-		...mapGetters('input', ['count', 'formula', 'answer']),
+		...mapGetters('input', ['count', 'formula', 'answer', 'checkResult']),
 		styleVars() {
 			return { '--numsCount': this.count }
 		},
