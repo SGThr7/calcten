@@ -14,6 +14,7 @@
 			<span class="equal">=</span>
 			<span class="answer">{{ Math.floor(answer * 100) / 100 }}</span>
 		</div>
+		<div class="overlay check-result">◯</div>
 	</div>
 </template>
 
@@ -44,6 +45,7 @@ export default Vue.extend({
 	display: grid
 	grid-template-rows: 1.5fr 1fr
 	font-family: 'New Tegomin'
+	position: relative
 
 .calc-area
 	display: grid
@@ -66,4 +68,16 @@ export default Vue.extend({
 
 	.answer
 		font-size: 3em
+
+.overlay
+	position: absolute
+	height: 100%
+	width: 100%
+	display: flex
+	justify-content: center
+	align-items: center
+
+.check-result
+	font-size: 10em
+	color: orangered
 </style>
