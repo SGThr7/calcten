@@ -4,11 +4,29 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import { mapGetters } from 'vuex'
+import { mapGetters, mapMutations } from 'vuex'
 
 export default Vue.extend({
+	data() {
+		return {
+			timer: null,
+		}
+	},
 	computed: {
 		...mapGetters('input', ['checkResult']),
+	},
+	methods: {
+		...mapMutations('input', ['refresh']),
+	},
+	watch: {
+		checkResult(res) {
+			if (res && this.timer === null) {
+				this.timer = setTimeout(() => {
+					this.refresh()
+					this.timer = null
+				}, 1000)
+			}
+		},
 	},
 })
 </script>
