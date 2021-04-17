@@ -7,6 +7,7 @@
 					:value="bracket"
 					class="bracket-button"
 					@click="add({ sign: bracket })"
+					:disabled="checkResult"
 				/>
 			</div>
 		</template>
@@ -17,6 +18,7 @@
 				class="delete-button"
 				value="←"
 				@click="remove()"
+				:disabled="checkResult"
 			/>
 		</div>
 		<template v-for="op in opList">
@@ -26,6 +28,7 @@
 					class="ops"
 					:value="op"
 					@click="add({ sign: op })"
+					:disabled="checkResult"
 				/>
 			</div>
 		</template>
@@ -38,7 +41,7 @@ import { mapGetters, mapMutations } from 'vuex'
 
 export default Vue.extend({
 	computed: {
-		...mapGetters('input', ['count', 'opList', 'bracketList']),
+		...mapGetters('input', ['count', 'opList', 'bracketList', 'checkResult']),
 		styleVars() {
 			return {
 				'--opsCount': 4,
