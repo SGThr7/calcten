@@ -12,6 +12,7 @@ import {
 
 const state = {
 	count: 4,
+	answer: 10,
 	nums: [] as number[],
 	ops: [] as FormulaSign[],
 }
@@ -148,8 +149,14 @@ const store: Module<state, typeof rootState> = {
 			}
 			return rpn
 		},
-		answer(state, { rpn }: { rpn: (number | Operator)[] }) {
+		result(state, { rpn }: { rpn: (number | Operator)[] }): number {
 			return calc(rpn)
+		},
+		checkResult(state, { result }: { result: number }): boolean {
+			const nop = state.ops.filter((o) =>
+				Object.values<Object>(Operator).includes(o)
+			).length
+			return nop === state.count - 1 && result === state.answer
 		},
 	},
 }
