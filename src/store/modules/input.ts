@@ -149,14 +149,14 @@ const store: Module<state, typeof rootState> = {
 			}
 			return rpn
 		},
-		answer(state, { rpn }: { rpn: (number | Operator)[] }): number {
+		result(state, { rpn }: { rpn: (number | Operator)[] }): number {
 			return calc(rpn)
 		},
-		checkResult(state, { answer }: { answer: number }): boolean {
+		checkResult(state, { result }: { result: number }): boolean {
 			const nop = state.ops.filter((o) =>
 				Object.values<Object>(Operator).includes(o)
 			).length
-			return nop === state.count - 1 && answer === state.answer
+			return nop === state.count - 1 && result === state.answer
 		},
 	},
 }

@@ -10,23 +10,23 @@
 				</div>
 			</template>
 		</div>
-		<div class="answer-area">
+		<div class="result-area">
 			<span class="equal">=</span>
-			<span class="answer">{{ Math.floor(answer * 100) / 100 }}</span>
+			<span class="result">{{ Math.floor(result * 100) / 100 }}</span>
 		</div>
-		<check-result></check-result>
+		<result-checker></result-checker>
 	</div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue'
 import { mapGetters, mapMutations } from 'vuex'
-import CheckResult from './CheckResult.vue'
+import ResultChecker from './ResultChecker.vue'
 
 export default Vue.extend({
-	components: { CheckResult },
+	components: { ResultChecker },
 	computed: {
-		...mapGetters('input', ['count', 'formula', 'answer', 'checkResult']),
+		...mapGetters('input', ['count', 'formula', 'result', 'checkResult']),
 		styleVars() {
 			return { '--numsCount': this.count }
 		},
@@ -61,13 +61,13 @@ export default Vue.extend({
 	.ops
 		font-size: 2em
 
-.answer-area
+.result-area
 	align-self: start
 	padding-top: 1em
 
 	.equal
 		font-size: 2em
 
-	.answer
+	.result
 		font-size: 3em
 </style>
