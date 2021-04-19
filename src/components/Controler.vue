@@ -11,7 +11,7 @@
 				/>
 			</div>
 		</template>
-		<div class="empty"></div>
+		<div class="spacer"></div>
 		<div class="input-wrapper">
 			<input
 				type="button"
@@ -55,7 +55,7 @@ export default Vue.extend({
 </script>
 
 <style lang="sass" scoped>
-.empty
+.spacer
 	grid-column: 3 / span calc(var(--opsCount) - 3)
 
 .controller-area
