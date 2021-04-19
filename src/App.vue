@@ -1,7 +1,6 @@
 <template>
 	<div class="game-area">
-		<display></display>
-		<controller></controller>
+		<router-view></router-view>
 	</div>
 </template>
 
@@ -38,10 +37,6 @@ body
 
 	font-size: min(1rem, 4vw)
 	text-align: center
-
-	display: grid
-	grid-template-rows: 6fr 5fr
-	place-items: center
 
 	border: 1px solid
 </style>
