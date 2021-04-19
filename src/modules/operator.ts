@@ -44,3 +44,7 @@ export const OpData: OpData = {
 		fn: (a, b) => a / b,
 	},
 } as const
+
+export function isOperator(literal: unknown): literal is Operator {
+	return Object.values<unknown>(Operator).includes(literal)
+}

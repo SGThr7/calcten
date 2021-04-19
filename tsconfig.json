@@ -1,9 +1,10 @@
 {
 	"compilerOptions": {
+		"strict": true,
+		"target": "ES5",
+		"module": "ES2015",
+		"moduleResolution": "Node",
 		"sourceMap": true,
-		"target": "ES6",
-		"module": "CommonJS",
-		"noImplicitAny": true,
 		"paths": {
 			"@/*": [
 				"./src/*"

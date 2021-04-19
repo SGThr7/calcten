@@ -1,10 +1,10 @@
-import { OpData, Operator } from '@/modules/operator'
+import { isOperator, OpData, Operator } from '@/modules/operator'
 
 function genRPN(nums: number[], ops: Operator[]) {
 	const fn = (now: (number | Operator)[], nums: number[], ops: Operator[]) => {
 		const nnums = now.filter((t) => typeof t === 'number').length
 		const nops = now.length - nnums
-		if (!(nums.length > 0) && !(nnums - 1 > nops)) return [now.join('')]
+		if (nums.length <= 0 && nnums - 1 === nops) return [now.join('')]
 		const res: Array<string> = []
 
 		if (nums.length > 0) {
@@ -29,15 +29,19 @@ export function calc(rpn: (number | Operator)[]) {
 	while (token !== undefined) {
 		if (typeof token === 'number') {
 			stack.push(token)
-		} else if (typeof token === 'string') {
+		} else if (isOperator(token)) {
 			const rhs = stack.pop()
 			const lhs = stack.pop()
+			if (typeof lhs !== 'number' || typeof rhs !== 'number')
+				throw new SyntaxError('Incorrect RPN syntax.')
 			const ans = OpData[token].fn(lhs, rhs)
 			stack.push(ans)
+		} else {
+			throw new SyntaxError('Incorrect RPN syntax.')
 		}
 		token = rpn.shift()
 	}
-	return stack.pop()
+	return stack.pop() as number
 }
 
 function toRPN(strRPN: string) {
@@ -51,8 +55,6 @@ export function isSolvable(nums: number[]) {
 		(t) => t !== Operator.none
 	)
 	const rpns = genRPN(nums, ops)
-	const res = rpns.filter((rpn) => calc(rpn) === 10)
-	console.log(res)
 	const ans = rpns.some((rpn) => calc(rpn) === 10)
 	return ans
 }
