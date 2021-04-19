@@ -4,7 +4,7 @@ function genRPN(nums: number[], ops: Operator[]) {
 	const fn = (now: (number | Operator)[], nums: number[], ops: Operator[]) => {
 		const nnums = now.filter((t) => typeof t === 'number').length
 		const nops = now.length - nnums
-		if (!(nums.length > 0) && !(nnums - 1 > nops)) return [now.join('')]
+		if (nums.length <= 0 && nnums - 1 === nops) return [now.join('')]
 		const res: Array<string> = []
 
 		if (nums.length > 0) {
@@ -55,8 +55,6 @@ export function isSolvable(nums: number[]) {
 		(t) => t !== Operator.none
 	)
 	const rpns = genRPN(nums, ops)
-	const res = rpns.filter((rpn) => calc(rpn) === 10)
-	console.log(res)
 	const ans = rpns.some((rpn) => calc(rpn) === 10)
 	return ans
 }

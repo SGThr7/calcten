@@ -97,8 +97,8 @@ const store: Module<state, typeof rootState> = {
 				o = ops.shift()
 				n = nums.shift()?.toString(10)
 			}
+			// Pop tail Operator.none
 			res.pop()
-			res.push(res.pop())
 			return res
 		},
 		rpn(state, { formula, opData }: { formula: string[]; opData: OpData }) {
