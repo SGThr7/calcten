@@ -5,6 +5,7 @@ import {
 	Bracket,
 	BracketList,
 	FormulaSign,
+	isOperator,
 	OpData,
 	Operator,
 	OpList,
@@ -34,9 +35,7 @@ const store: Module<state, typeof rootState> = {
 			state.ops = []
 		},
 		add(state, { sign }: { sign: FormulaSign }) {
-			const nop = state.ops.filter((o) =>
-				Object.values<Object>(Operator).includes(o)
-			).length
+			const nop = state.ops.filter((o) => isOperator(o)).length
 			const nlparen = state.ops.filter((o) => o === Bracket.lparen).length
 			const opTop = state.ops[state.ops.length - 1]
 			if (sign === Bracket.lparen) {
@@ -85,7 +84,7 @@ const store: Module<state, typeof rootState> = {
 				}
 
 				res.push(n)
-				if (Object.values<Object>(Operator).includes(o)) {
+				if (isOperator(o)) {
 					res.push(o)
 				} else {
 					res.push(Operator.none)
@@ -153,9 +152,7 @@ const store: Module<state, typeof rootState> = {
 			return calc(rpn)
 		},
 		checkResult(state, { result }: { result: number }): boolean {
-			const nop = state.ops.filter((o) =>
-				Object.values<Object>(Operator).includes(o)
-			).length
+			const nop = state.ops.filter((o) => isOperator(o)).length
 			return nop === state.count - 1 && result === state.answer
 		},
 	},

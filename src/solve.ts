@@ -1,4 +1,4 @@
-import { OpData, Operator } from '@/modules/operator'
+import { isOperator, OpData, Operator } from '@/modules/operator'
 
 function genRPN(nums: number[], ops: Operator[]) {
 	const fn = (now: (number | Operator)[], nums: number[], ops: Operator[]) => {
@@ -29,7 +29,7 @@ export function calc(rpn: (number | Operator)[]) {
 	while (token !== undefined) {
 		if (typeof token === 'number') {
 			stack.push(token)
-		} else if (typeof token === 'string') {
+		} else if (isOperator(token)) {
 			const rhs = stack.pop()
 			const lhs = stack.pop()
 			const ans = OpData[token].fn(lhs, rhs)
