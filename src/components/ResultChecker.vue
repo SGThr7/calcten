@@ -9,7 +9,7 @@ import { mapGetters, mapMutations } from 'vuex'
 export default Vue.extend({
 	data() {
 		return {
-			timer: null,
+			timer: null as NodeJS.Timeout | null,
 		}
 	},
 	computed: {

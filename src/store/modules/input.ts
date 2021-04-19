@@ -82,6 +82,11 @@ const store: Module<state, typeof rootState> = {
 					n += o
 					o = ops.shift()
 				}
+				if (o === Bracket.lparen) {
+					throw new SyntaxError(
+						'Cannot input left paren right after right paren.'
+					)
+				}
 
 				res.push(n)
 				if (isOperator(o)) {
@@ -111,8 +116,7 @@ const store: Module<state, typeof rootState> = {
 				f.push(Bracket.rparen)
 			}
 			const rpn: (number | Operator)[] = []
-			const stack: FormulaSign[] = []
-			const stackTop = () => stack[stack.length - 1]
+			const stack: (Operator | typeof Bracket.lparen)[] = []
 			let token = f.shift()
 			while (token !== undefined) {
 				if (typeof token === 'number') {
@@ -121,30 +125,36 @@ const store: Module<state, typeof rootState> = {
 					if (token === Bracket.lparen) {
 						stack.push(token)
 					} else if (token === Bracket.rparen) {
-						while (stackTop() !== Bracket.lparen) {
-							rpn.push(stack.pop() as Operator)
+						let stackTop = stack.pop()
+						while (stackTop !== Bracket.lparen) {
+							if (stackTop === undefined)
+								throw new Error('Not found left paren.')
+							rpn.push(stackTop)
+							stackTop = stack.pop()
 						}
-						stack.pop()
 					} else {
+						let stackTop = stack.pop()
 						while (
-							Object.values<FormulaSign>(Operator).includes(
-								stackTop()
-							) &&
-							opData[token].priority <=
-								opData[stackTop() as Operator]?.priority
+							isOperator(stackTop) &&
+							opData[token].priority <= opData[stackTop]?.priority
 						) {
-							rpn.push(stack.pop() as Operator)
+							rpn.push(stackTop)
+							stackTop = stack.pop()
 						}
+						if (stackTop !== undefined) stack.push(stackTop)
 						stack.push(token)
 					}
 				}
 
 				token = f.shift()
 			}
-			while (stack.length > 0) {
-				if (stackTop() !== Bracket.lparen) {
-					rpn.push(stack.pop() as Operator)
+
+			let stackTop = stack.pop()
+			while (stackTop !== undefined) {
+				if (stackTop !== Bracket.lparen) {
+					rpn.push(stackTop)
 				}
+				stackTop = stack.pop()
 			}
 			return rpn
 		},

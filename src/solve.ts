@@ -32,12 +32,16 @@ export function calc(rpn: (number | Operator)[]) {
 		} else if (isOperator(token)) {
 			const rhs = stack.pop()
 			const lhs = stack.pop()
+			if (typeof lhs !== 'number' || typeof rhs !== 'number')
+				throw new SyntaxError('Incorrect RPN syntax.')
 			const ans = OpData[token].fn(lhs, rhs)
 			stack.push(ans)
+		} else {
+			throw new SyntaxError('Incorrect RPN syntax.')
 		}
 		token = rpn.shift()
 	}
-	return stack.pop()
+	return stack.pop() as number
 }
 
 function toRPN(strRPN: string) {
