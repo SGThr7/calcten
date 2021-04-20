@@ -1,7 +1,6 @@
 <template>
 	<div class="game-area">
-		<display></display>
-		<controller></controller>
+		<router-view></router-view>
 	</div>
 </template>
 
@@ -17,12 +16,22 @@ export default Vue.extend({
 
 <style lang="sass">
 // text memo: 0123456789(＋−×÷=)
+// font-family: 'New Tegomin', serif
 @import url('https://fonts.googleapis.com/css2?family=New+Tegomin&display=swap')
+// font-family: 'Balsamiq Sans', cursive
+@import url('https://fonts.googleapis.com/css2?family=Balsamiq+Sans&display=swap&text=calc10')
+// font-family: 'Kanit', sans-serif
+@import url('https://fonts.googleapis.com/css2?family=Kanit:wght@600&display=swap&text=play')
 
 html, body
 	height: 100%
 	width: 100%
 	margin: 0
+
+	user-select: none
+	-webkit-user-select: none
+	-moz-user-select: none
+	-ms-user-select: none
 
 body
 	display: grid
@@ -38,10 +47,6 @@ body
 
 	font-size: min(1rem, 4vw)
 	text-align: center
-
-	display: grid
-	grid-template-rows: 6fr 5fr
-	place-items: center
 
 	border: 1px solid
 </style>
