@@ -9,8 +9,13 @@ import Vue from 'vue'
 import Display from './components/Display.vue'
 import Controller from './components/Controler.vue'
 
+import { render } from '@/modules/icon'
+
 export default Vue.extend({
 	components: { Display, Controller },
+	mounted() {
+		render()
+	},
 })
 </script>
 
@@ -44,6 +49,7 @@ body
 	max-width: 400px
 	padding: 10px
 	box-sizing: border-box
+	position: relative
 
 	font-size: min(1rem, 4vw)
 	text-align: center
