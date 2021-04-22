@@ -11,23 +11,37 @@
 		</div>
 		<div class="score">
 			<div class="status-title">Score</div>
-			<div class="score status-value">283</div>
+			<div class="score status-value">
+				{{ animatedScore }}
+			</div>
 		</div>
 	</div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue'
+import { mapGetters, mapActions } from 'vuex'
 import Timer from '@/components/Timer.vue'
+import gsap from 'gsap'
 
 export default Vue.extend({
 	components: { Timer },
 	data() {
 		return {
 			time: 60 * 1000,
+			tmpScore: 0,
 		}
 	},
+	computed: {
+		...mapGetters('score', ['score']),
+		animatedScore(): string {
+			return this.tmpScore.toFixed(0)
+		},
+	},
 	methods: {
+		...mapActions('score', {
+			addScore: 'add',
+		}),
 		formatSec(seconds: number) {
 			return seconds.toString(10).padStart(2, '0')
 		},
@@ -35,6 +49,11 @@ export default Vue.extend({
 			return Math.floor(milliseconds / 10)
 				.toString(10)
 				.padEnd(2, '0')
+		},
+	},
+	watch: {
+		score(newVal) {
+			gsap.to(this.$data, { duration: 0.5, tmpScore: newVal })
 		},
 	},
 })
