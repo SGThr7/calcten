@@ -3,7 +3,10 @@
 		<div class="timer">
 			<div class="status-title">Time</div>
 			<div class="timer status-value">
-				<i class="far fa-clock"></i> 41.20
+				<timer :time="time" v-slot="{ seconds, milliseconds }">
+					<i class="far fa-clock"></i>
+					{{ formatSec(seconds) }}.{{ formatMS(milliseconds) }}
+				</timer>
 			</div>
 		</div>
 		<div class="score">
@@ -15,9 +18,25 @@
 
 <script lang="ts">
 import Vue from 'vue'
+import Timer from '@/components/Timer.vue'
 
 export default Vue.extend({
-	//
+	components: { Timer },
+	data() {
+		return {
+			time: 60 * 1000,
+		}
+	},
+	methods: {
+		formatSec(seconds: number) {
+			return seconds.toString(10).padStart(2, '0')
+		},
+		formatMS(milliseconds: number) {
+			return Math.floor(milliseconds / 10)
+				.toString(10)
+				.padEnd(2, '0')
+		},
+	},
 })
 </script>
 
