@@ -43,6 +43,7 @@ export default Vue.extend({
 <style lang="sass" scoped>
 .status-bar
 	position: absolute
+	z-index: 1
 	box-sizing: border-box
 	$padding-size: 10px
 	left: $padding-size
