@@ -38,9 +38,6 @@ export default Vue.extend({
 			/**
 			 * ### Include division operator
 			 *
-			 * ```
-			 * 	Division bonus = <base score> * 0.5
-			 * ```
 			 * Division operator is not easy to use.
 			 * So if the formula includes division operator,
 			 * get a bonus score that half the base score.
@@ -51,9 +48,6 @@ export default Vue.extend({
 			/**
 			 * ### Use all operators
 			 *
-			 * ```
-			 * 	All operators bonus = <base score> * 0.2
-			 * ```
 			 * Used all operators formula is beautiful.
 			 * So get a bonus 0.2 base score.
 			 */
