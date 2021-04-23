@@ -65,6 +65,7 @@ export default Vue.extend({
 	z-index: 1
 	box-sizing: border-box
 	$padding-size: 10px
+	top: $padding-size
 	left: $padding-size
 	right: $padding-size
 
