@@ -5,7 +5,7 @@
 <script lang="ts">
 import Vue from 'vue'
 import { mapGetters, mapMutations, mapActions } from 'vuex'
-import { Operator, OpList } from '@/modules/operator'
+import { isOperator, Operator, OpList } from '@/modules/operator'
 
 export default Vue.extend({
 	data() {
@@ -33,6 +33,7 @@ export default Vue.extend({
 			this.addScore({ score: baseScore })
 
 			/// ## Bonus score
+			const ops = new Set(this.ops.filter((op: unknown) => isOperator(op)))
 
 			/**
 			 * ### Include division operator
@@ -45,7 +46,6 @@ export default Vue.extend({
 			 * get a bonus score that half the base score.
 			 */
 			const divisionBonus = baseScore * 0.5
-			const ops = new Set(this.ops)
 			if (ops.has(Operator.div)) this.addScore({ score: divisionBonus })
 
 			/**
