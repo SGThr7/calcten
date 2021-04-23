@@ -13,8 +13,12 @@
   },
   "license": "NOLICENSED",
   "devDependencies": {
+    "@fortawesome/fontawesome-svg-core": "^1.2.35",
+    "@fortawesome/free-regular-svg-icons": "^5.15.3",
+    "@fortawesome/free-solid-svg-icons": "^5.15.3",
     "@types/webpack-env": "^1.16.0",
     "css-loader": "^5.2.0",
+    "gsap": "^3.6.1",
     "html-webpack-plugin": "^5.3.1",
     "sass": "^1.32.8",
     "sass-loader": "^11.0.1",

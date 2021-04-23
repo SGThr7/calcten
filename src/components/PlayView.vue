@@ -1,5 +1,6 @@
 <template>
 	<div class="play-view">
+		<status-bar></status-bar>
 		<display></display>
 		<controller></controller>
 	</div>
@@ -9,9 +10,10 @@
 import Vue from 'vue'
 import Display from '@/components/Display.vue'
 import Controller from '@/components/Controler.vue'
+import StatusBar from '@/components/StatusBar.vue'
 
 export default Vue.extend({
-	components: { Display, Controller },
+	components: { Display, Controller, StatusBar },
 })
 </script>
 
