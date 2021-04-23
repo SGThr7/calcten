@@ -64,6 +64,8 @@ const store: Module<state, typeof rootState> = {
 	},
 	getters: {
 		count: ({ count }) => count,
+		nums: ({ nums }) => nums,
+		ops: ({ ops }) => ops,
 		opList: () => OpList,
 		bracketList: () => BracketList,
 		opData: () => OpData,
