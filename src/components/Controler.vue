@@ -1,6 +1,6 @@
 <template>
 	<div class="controller-area button-grid" :style="styleVars">
-		<template v-for="bracket in bracketList">
+		<template v-for="bracket in brackets">
 			<div class="input-wrapper" :key="bracket.id">
 				<input
 					type="button"
@@ -21,7 +21,7 @@
 				:disabled="checkResult"
 			/>
 		</div>
-		<template v-for="op in opList">
+		<template v-for="op in operators">
 			<div class="input-wrapper" :key="op.id">
 				<input
 					type="button"
@@ -38,15 +38,18 @@
 <script lang="ts">
 import Vue from 'vue'
 import { mapGetters, mapMutations } from 'vuex'
+import { Bracket, Operator } from '@/modules/operator'
 
 export default Vue.extend({
 	computed: {
-		...mapGetters('input', ['count', 'opList', 'bracketList', 'checkResult']),
+		...mapGetters('input', ['count', 'checkResult']),
 		styleVars() {
 			return {
 				'--opsCount': 4,
 			}
 		},
+		operators: () => Object.values(Operator),
+		brackets: () => Object.values(Bracket),
 	},
 	methods: {
 		...mapMutations('input', ['add', 'remove']),
