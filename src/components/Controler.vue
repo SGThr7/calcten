@@ -1,36 +1,29 @@
 <template>
 	<div class="controller-area button-grid" :style="styleVars">
 		<template v-for="bracket in brackets">
-			<div class="input-wrapper" :key="bracket.id">
-				<input
-					type="button"
-					:value="bracket"
-					class="bracket-button"
-					@click="add({ sign: bracket })"
-					:disabled="checkResult"
-				/>
-			</div>
+			<key-button
+				:key="bracket.id"
+				:label="bracket"
+				:disabled="checkResult"
+				:bindKey="keyBind[bracket]"
+				@click="add({ sign: bracket })"
+			></key-button>
 		</template>
 		<div class="spacer"></div>
-		<div class="input-wrapper">
-			<input
-				type="button"
-				class="delete-button"
-				value="←"
-				@click="remove()"
-				:disabled="checkResult"
-			/>
-		</div>
+		<key-button
+			label="←"
+			:disabled="checkResult"
+			:bindKey="keyBind.remove"
+			@click="remove()"
+		></key-button>
 		<template v-for="op in operators">
-			<div class="input-wrapper" :key="op.id">
-				<input
-					type="button"
-					class="ops"
-					:value="op"
-					@click="add({ sign: op })"
-					:disabled="checkResult"
-				/>
-			</div>
+			<key-button
+				:key="op.id"
+				:label="op"
+				:disabled="checkResult"
+				:bindKey="keyBind[op]"
+				@click="add({ sign: op })"
+			></key-button>
 		</template>
 	</div>
 </template>
@@ -38,9 +31,12 @@
 <script lang="ts">
 import Vue from 'vue'
 import { mapGetters, mapMutations } from 'vuex'
+import KeyButton from '@/components/KeyButton.vue'
+import { keyBind } from '@/modules/keybinding'
 import { Bracket, Operator } from '@/modules/operator'
 
 export default Vue.extend({
+	components: { KeyButton },
 	computed: {
 		...mapGetters('input', ['count', 'checkResult']),
 		styleVars() {
@@ -48,6 +44,7 @@ export default Vue.extend({
 				'--opsCount': 4,
 			}
 		},
+		keyBind: () => keyBind,
 		operators: () => Object.values(Operator),
 		brackets: () => Object.values(Bracket),
 	},
