@@ -5,6 +5,13 @@ export class Key {
 	altKey: boolean
 	ctrlKey: boolean
 	shiftKey: boolean
+	get modifier() {
+		return {
+			altKey: this.altKey,
+			ctrlKey: this.ctrlKey,
+			shiftKey: this.shiftKey,
+		}
+	}
 
 	constructor(
 		code: string,
@@ -32,17 +39,85 @@ export class Key {
 			return false
 		}
 	}
+
+	toJSON() {
+		return `Key{"code": "${this.code}", "modifier": ${JSON.stringify(
+			this.modifier
+		)}}`
+	}
 }
 
-export type KeyBindings = {
-	[key in Exclude<Operator, typeof Operator.none> | Bracket | 'remove']: Key
+export class KeyBind {
+	private bindList: BindList = {
+		[Operator.plus]: new Key('KeyJ'),
+		[Operator.minus]: new Key('KeyK'),
+		[Operator.times]: new Key('KeyL'),
+		[Operator.div]: new Key('Semicolon'),
+		[Bracket.lparen]: new Key('KeyU'),
+		[Bracket.rparen]: new Key('KeyI'),
+		remove: new Key('KeyO'),
+	}
+	get [Operator.plus]() {
+		return this.bindList[Operator.plus]
+	}
+	get [Operator.minus]() {
+		return this.bindList[Operator.minus]
+	}
+	get [Operator.times]() {
+		return this.bindList[Operator.times]
+	}
+	get [Operator.div]() {
+		return this.bindList[Operator.div]
+	}
+	get [Bracket.lparen]() {
+		return this.bindList[Bracket.lparen]
+	}
+	get [Bracket.rparen]() {
+		return this.bindList[Bracket.rparen]
+	}
+	get remove() {
+		return this.bindList['remove']
+	}
+
+	static storageKey = 'keybinding'
+
+	constructor(bindList?: BindList) {
+		this.bindList = {
+			...this.bindList,
+			...this.getStorage(),
+			...bindList,
+		}
+	}
+
+	saveStorage(): void {
+		localStorage.setItem(KeyBind.storageKey, JSON.stringify(this.bindList))
+	}
+
+	getStorage(): Partial<BindList> {
+		const item = localStorage.getItem(KeyBind.storageKey)
+		return item ? JSON.parse(item, KeyBind.reviver) : {}
+	}
+
+	static reviver(key: string, value: unknown) {
+		if (
+			typeof value === 'string' &&
+			value.startsWith('Key{') &&
+			value.endsWith('}')
+		) {
+			const obj: ParsedKey = JSON.parse(value.slice(3))
+			return new Key(obj.code, obj.modifier)
+		}
+
+		return value
+	}
 }
-export const KeyBindings: KeyBindings = {
-	[Operator.plus]: new Key('KeyJ'),
-	[Operator.minus]: new Key('KeyK'),
-	[Operator.times]: new Key('KeyL'),
-	[Operator.div]: new Key('Semicolon'),
-	[Bracket.lparen]: new Key('KeyU'),
-	[Bracket.rparen]: new Key('KeyI'),
-	remove: new Key('KeyO'),
+export const keyBind = new KeyBind()
+type Keys = Operator | Bracket | 'remove'
+type BindList = {
+	[key in Keys]: Key
+}
+
+type ParsedKey = {
+	code: string
+	modifier?: { altKey?: boolean; ctrlKey?: boolean; shiftKey?: boolean }
 }

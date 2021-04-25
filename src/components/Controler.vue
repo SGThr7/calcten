@@ -5,7 +5,7 @@
 				:key="bracket.id"
 				:label="bracket"
 				:disabled="checkResult"
-				:bindKey="KeyBindings[bracket]"
+				:bindKey="keyBind[bracket]"
 				@click="add({ sign: bracket })"
 			></key-button>
 		</template>
@@ -13,7 +13,7 @@
 		<key-button
 			label="←"
 			:disabled="checkResult"
-			:bindKey="KeyBindings.remove"
+			:bindKey="keyBind.remove"
 			@click="remove()"
 		></key-button>
 		<template v-for="op in operators">
@@ -21,7 +21,7 @@
 				:key="op.id"
 				:label="op"
 				:disabled="checkResult"
-				:bindKey="KeyBindings[op]"
+				:bindKey="keyBind[op]"
 				@click="add({ sign: op })"
 			></key-button>
 		</template>
@@ -32,7 +32,7 @@
 import Vue from 'vue'
 import { mapGetters, mapMutations } from 'vuex'
 import KeyButton from '@/components/KeyButton.vue'
-import { KeyBindings } from '@/modules/keybinding'
+import { keyBind } from '@/modules/keybinding'
 import { Bracket, Operator } from '@/modules/operator'
 
 export default Vue.extend({
@@ -44,7 +44,7 @@ export default Vue.extend({
 				'--opsCount': 4,
 			}
 		},
-		KeyBindings: () => KeyBindings,
+		keyBind: () => keyBind,
 		operators: () => Object.values(Operator),
 		brackets: () => Object.values(Bracket),
 	},
