@@ -5,7 +5,7 @@
 <script lang="ts">
 import Vue from 'vue'
 import { mapGetters, mapMutations, mapActions } from 'vuex'
-import { isOperator, Operator, OpList } from '@/modules/operator'
+import { isOperator, Operator } from '@/modules/operator'
 
 export default Vue.extend({
 	data() {
@@ -52,7 +52,7 @@ export default Vue.extend({
 			 * So get a bonus 0.2 base score.
 			 */
 			const allOperatorsBonus = baseScore * 0.2
-			const nkind = Math.min(this.count - 1, OpList.length)
+			const nkind = Math.min(this.count - 1, Object.keys(Operator).length)
 			if (ops.size >= nkind) this.addScore({ score: allOperatorsBonus })
 		},
 	},

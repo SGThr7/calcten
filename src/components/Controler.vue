@@ -1,6 +1,6 @@
 <template>
 	<div class="controller-area button-grid" :style="styleVars">
-		<template v-for="bracket in bracketList">
+		<template v-for="bracket in brackets">
 			<key-button
 				:key="bracket.id"
 				:label="bracket"
@@ -16,7 +16,7 @@
 			:bindKey="KeyBindings.remove"
 			@click="remove()"
 		></key-button>
-		<template v-for="op in opList">
+		<template v-for="op in operators">
 			<key-button
 				:key="op.id"
 				:label="op"
@@ -31,19 +31,22 @@
 <script lang="ts">
 import Vue from 'vue'
 import { mapGetters, mapMutations } from 'vuex'
-import { KeyBindings } from '@/modules/keybinding'
 import KeyButton from '@/components/KeyButton.vue'
+import { KeyBindings } from '@/modules/keybinding'
+import { Bracket, Operator } from '@/modules/operator'
 
 export default Vue.extend({
 	components: { KeyButton },
 	computed: {
-		...mapGetters('input', ['count', 'opList', 'bracketList', 'checkResult']),
+		...mapGetters('input', ['count', 'checkResult']),
 		styleVars() {
 			return {
 				'--opsCount': 4,
 			}
 		},
 		KeyBindings: () => KeyBindings,
+		operators: () => Object.values(Operator),
+		brackets: () => Object.values(Bracket),
 	},
 	methods: {
 		...mapMutations('input', ['add', 'remove']),

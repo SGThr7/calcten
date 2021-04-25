@@ -1,5 +1,4 @@
 export const Operator = {
-	none: '＿',
 	plus: '＋',
 	minus: '−',
 	times: '×',
@@ -7,7 +6,11 @@ export const Operator = {
 } as const
 export type Operator = typeof Operator[keyof typeof Operator]
 
-export const OpList = Object.values(Operator).filter((t) => t !== Operator.none)
+export const InputSign = {
+	none: '＿',
+	...Operator,
+} as const
+export type InputSign = typeof InputSign[keyof typeof InputSign]
 
 export const Bracket = {
 	lparen: '(',
@@ -15,15 +18,13 @@ export const Bracket = {
 } as const
 export type Bracket = typeof Bracket[keyof typeof Bracket]
 
-export const BracketList = Object.values(Bracket)
-
-export type FormulaSign = Operator | Bracket
+export type FormulaSign = InputSign | Bracket
 
 export type OpFunc = (a: number, b: number) => number
 
-export type OpData = Record<Operator, { priority: number; fn: OpFunc }>
+export type OpData = Record<InputSign, { priority: number; fn: OpFunc }>
 export const OpData: OpData = {
-	[Operator.none]: {
+	[InputSign.none]: {
 		priority: 100,
 		fn: (a, b) => a,
 	},
@@ -45,6 +46,10 @@ export const OpData: OpData = {
 	},
 } as const
 
-export function isOperator(literal: unknown): literal is Operator {
-	return Object.values<unknown>(Operator).includes(literal)
+export function isOperator(arg: unknown): arg is Operator {
+	return Object.values<unknown>(Operator).includes(arg)
+}
+
+export function isInputSign(arg: unknown): arg is InputSign {
+	return Object.values<unknown>(InputSign).includes(arg)
 }

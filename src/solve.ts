@@ -1,4 +1,4 @@
-import { isOperator, OpData, Operator } from '@/modules/operator'
+import { InputSign, isInputSign, OpData, Operator } from '@/modules/operator'
 
 function genRPN(nums: number[], ops: Operator[]) {
 	const fn = (now: (number | Operator)[], nums: number[], ops: Operator[]) => {
@@ -22,14 +22,14 @@ function genRPN(nums: number[], ops: Operator[]) {
 	return Array.from(new Set(fn([], nums, ops))).map(toRPN)
 }
 
-export function calc(rpn: (number | Operator)[]) {
+export function calc(rpn: (number | InputSign)[]) {
 	rpn = rpn.slice()
 	const stack: number[] = []
 	let token = rpn.shift()
 	while (token !== undefined) {
 		if (typeof token === 'number') {
 			stack.push(token)
-		} else if (isOperator(token)) {
+		} else if (isInputSign(token)) {
 			const rhs = stack.pop()
 			const lhs = stack.pop()
 			if (typeof lhs !== 'number' || typeof rhs !== 'number')
@@ -51,9 +51,7 @@ function toRPN(strRPN: string) {
 }
 
 export function isSolvable(nums: number[]) {
-	const ops: Array<Operator> = Object.values(Operator).filter(
-		(t) => t !== Operator.none
-	)
+	const ops: Array<Operator> = Object.values(Operator)
 	const rpns = genRPN(nums, ops)
 	const ans = rpns.some((rpn) => calc(rpn) === 10)
 	return ans

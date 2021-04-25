@@ -3,12 +3,10 @@ import rootState from '@/store'
 import { calc, isSolvable } from '@/solve'
 import {
 	Bracket,
-	BracketList,
 	FormulaSign,
+	InputSign,
 	isOperator,
 	OpData,
-	Operator,
-	OpList,
 } from '@/modules/operator'
 
 const state = {
@@ -66,9 +64,6 @@ const store: Module<state, typeof rootState> = {
 		count: ({ count }) => count,
 		nums: ({ nums }) => nums,
 		ops: ({ ops }) => ops,
-		opList: () => OpList,
-		bracketList: () => BracketList,
-		opData: () => OpData,
 		formula(state) {
 			const nums = state.nums.slice(0)
 			const ops = state.ops.slice(0)
@@ -94,7 +89,7 @@ const store: Module<state, typeof rootState> = {
 				if (isOperator(o)) {
 					res.push(o)
 				} else {
-					res.push(Operator.none)
+					res.push(InputSign.none)
 				}
 				o = ops.shift()
 				n = nums.shift()?.toString(10)
@@ -103,7 +98,7 @@ const store: Module<state, typeof rootState> = {
 			res.pop()
 			return res
 		},
-		rpn(state, { formula, opData }: { formula: string[]; opData: OpData }) {
+		rpn(state, { formula }: { formula: string[] }) {
 			const f = formula
 				.join('')
 				.split('')
@@ -117,8 +112,8 @@ const store: Module<state, typeof rootState> = {
 			for (let i = 0; i < nlparen - nrparen; i++) {
 				f.push(Bracket.rparen)
 			}
-			const rpn: (number | Operator)[] = []
-			const stack: (Operator | typeof Bracket.lparen)[] = []
+			const rpn: (number | InputSign)[] = []
+			const stack: (InputSign | typeof Bracket.lparen)[] = []
 			let token = f.shift()
 			while (token !== undefined) {
 				if (typeof token === 'number') {
@@ -138,7 +133,7 @@ const store: Module<state, typeof rootState> = {
 						let stackTop = stack.pop()
 						while (
 							isOperator(stackTop) &&
-							opData[token].priority <= opData[stackTop]?.priority
+							OpData[token].priority <= OpData[stackTop]?.priority
 						) {
 							rpn.push(stackTop)
 							stackTop = stack.pop()
@@ -160,7 +155,7 @@ const store: Module<state, typeof rootState> = {
 			}
 			return rpn
 		},
-		result(state, { rpn }: { rpn: (number | Operator)[] }): number {
+		result(state, { rpn }: { rpn: (number | InputSign)[] }): number {
 			return calc(rpn)
 		},
 		checkResult(state, { result }: { result: number }): boolean {
