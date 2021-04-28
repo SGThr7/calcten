@@ -1,8 +1,8 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 
-import TitleView from '@/components/TitleView.vue'
-import PlayView from '@/components/PlayView.vue'
+import TitleView from '@/components/TitleScene/TitleView.vue'
+import PlayView from '@/components/PlayScene/PlayView.vue'
 
 Vue.use(Router)
 

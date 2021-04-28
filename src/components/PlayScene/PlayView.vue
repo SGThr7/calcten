@@ -8,9 +8,9 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import Display from '@/components/Display.vue'
-import Controller from '@/components/Controler.vue'
-import StatusBar from '@/components/StatusBar.vue'
+import Display from '@/components/PlayScene/Display.vue'
+import Controller from '@/components/PlayScene/Controler.vue'
+import StatusBar from '@/components/StatusBar/index.vue'
 
 export default Vue.extend({
 	components: { Display, Controller, StatusBar },

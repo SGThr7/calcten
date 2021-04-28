@@ -1,6 +1,6 @@
 import { Module } from 'vuex'
 import rootState from '@/store'
-import { calc, isSolvable } from '@/solve'
+import { calc, isSolvable } from '@/modules/solve'
 import {
 	Bracket,
 	FormulaSign,

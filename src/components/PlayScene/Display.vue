@@ -21,7 +21,7 @@
 <script lang="ts">
 import Vue from 'vue'
 import { mapGetters, mapMutations } from 'vuex'
-import ResultChecker from './ResultChecker.vue'
+import ResultChecker from '@/components/Helpers/ResultChecker.vue'
 
 export default Vue.extend({
 	components: { ResultChecker },

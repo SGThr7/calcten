@@ -21,7 +21,7 @@
 <script lang="ts">
 import Vue from 'vue'
 import { mapGetters, mapActions } from 'vuex'
-import Timer from '@/components/Timer.vue'
+import Timer from '@/components/StatusBar/Timer.vue'
 import gsap from 'gsap'
 
 export default Vue.extend({
