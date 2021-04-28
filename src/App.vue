@@ -6,8 +6,8 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import Display from './components/Display.vue'
-import Controller from './components/Controler.vue'
+import Display from '@/components/PlayScene/Display.vue'
+import Controller from '@/components/PlayScene/Controler.vue'
 
 import { render } from '@/modules/icon'
 

@@ -31,7 +31,7 @@
 <script lang="ts">
 import Vue from 'vue'
 import { mapGetters, mapMutations } from 'vuex'
-import KeyButton from '@/components/KeyButton.vue'
+import KeyButton from '@/components/UIParts/KeyButton.vue'
 import { keyBind } from '@/modules/keybinding'
 import { Bracket, Operator } from '@/modules/operator'
 
