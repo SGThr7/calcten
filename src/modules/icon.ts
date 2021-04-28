@@ -4,5 +4,5 @@ import { faClock } from '@fortawesome/free-regular-svg-icons'
 export function render() {
 	library.add(faClock)
 
-	dom.i2svg()
+	dom.watch()
 }
