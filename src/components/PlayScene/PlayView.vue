@@ -1,6 +1,6 @@
 <template>
 	<div class="play-view">
-		<status-bar></status-bar>
+		<status-bar @timer-end="timerEnd"></status-bar>
 		<display></display>
 		<controller></controller>
 	</div>
@@ -14,6 +14,11 @@ import StatusBar from '@/components/StatusBar/index.vue'
 
 export default Vue.extend({
 	components: { Display, Controller, StatusBar },
+	methods: {
+		timerEnd() {
+			this.$router.replace({ name: 'result-view' })
+		},
+	},
 })
 </script>
 
