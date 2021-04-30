@@ -3,7 +3,12 @@
 		<div class="timer">
 			<div class="status-title">Time</div>
 			<div class="timer status-value">
-				<timer :time="time" v-slot="{ seconds, milliseconds }">
+				<timer
+					:time="time"
+					v-slot="{ seconds, milliseconds }"
+					@start="$emit('timer-start')"
+					@end="$emit('timer-end')"
+				>
 					<i class="far fa-clock"></i>
 					{{ formatSec(seconds) }}.{{ formatMS(milliseconds) }}
 				</timer>
