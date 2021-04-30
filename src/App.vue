@@ -26,7 +26,7 @@ export default Vue.extend({
 // font-family: 'Balsamiq Sans', cursive
 @import url('https://fonts.googleapis.com/css2?family=Balsamiq+Sans&display=swap&text=calc10')
 // font-family: 'Kanit', sans-serif
-@import url('https://fonts.googleapis.com/css2?family=Kanit:wght@600&display=swap&text=play')
+@import url('https://fonts.googleapis.com/css2?family=Kanit:wght@600&display=swap&text=PlayResultExit')
 
 html, body
 	height: 100%
