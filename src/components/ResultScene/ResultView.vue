@@ -22,9 +22,9 @@ export default Vue.extend({
 		...mapGetters('score', ['score']),
 	},
 	methods: {
-		...mapActions('scene', ['title']),
+		...mapActions('scene', { setScene: 'set' }),
 		exit() {
-			this.title()
+			this.setScene({ scene: 'Title' })
 		},
 	},
 })

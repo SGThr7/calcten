@@ -16,9 +16,9 @@ import StatusBar from '@/components/StatusBar/index.vue'
 export default Vue.extend({
 	components: { Display, Controller, StatusBar },
 	methods: {
-		...mapActions('scene', ['result']),
+		...mapActions('scene', { setScene: 'set' }),
 		timerEnd() {
-			this.result()
+			this.setScene({ scene: 'Result' })
 		},
 	},
 })

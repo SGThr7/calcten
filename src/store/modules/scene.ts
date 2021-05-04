@@ -15,19 +15,13 @@ const store: Module<typeof state, typeof rootState> = {
 		currentSceneKey: (state) => state.currentSceneKey,
 	},
 	mutations: {
-		setScene(state, payload: { scene: typeof state.currentSceneKey }) {
+		set(state, payload: { scene: typeof state.currentSceneKey }) {
 			state.currentSceneKey = payload.scene
 		},
 	},
 	actions: {
-		title({ commit }) {
-			commit('setScene', { scene: 'Title' })
-		},
-		play({ commit }) {
-			commit('setScene', { scene: 'Play' })
-		},
-		result({ commit }) {
-			commit('setScene', { scene: 'Result' })
+		set({ commit }, payload) {
+			commit('set', payload)
 		},
 	},
 }

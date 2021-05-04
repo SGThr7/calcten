@@ -22,11 +22,11 @@ import { mapActions } from 'vuex'
 
 export default Vue.extend({
 	methods: {
-		...mapActions('scene', { _play: 'play' }),
-		...mapActions('score', ['set']),
+		...mapActions('scene', { setScene: 'set' }),
+		...mapActions('score', { setScore: 'set' }),
 		play() {
-			this.set({ score: 0 })
-			this._play()
+			this.setScore({ score: 0 })
+			this.setScene({ scene: 'Play' })
 		},
 	},
 })
