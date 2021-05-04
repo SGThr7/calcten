@@ -8,6 +8,7 @@
 
 <script lang="ts">
 import Vue from 'vue'
+import { mapActions } from 'vuex'
 import Display from '@/components/PlayScene/Display.vue'
 import Controller from '@/components/PlayScene/Controler.vue'
 import StatusBar from '@/components/StatusBar/index.vue'
@@ -15,8 +16,9 @@ import StatusBar from '@/components/StatusBar/index.vue'
 export default Vue.extend({
 	components: { Display, Controller, StatusBar },
 	methods: {
+		...mapActions('scene', ['result']),
 		timerEnd() {
-			this.$router.replace({ name: 'result-view' })
+			this.result()
 		},
 	},
 })
