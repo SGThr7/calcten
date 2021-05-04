@@ -23,7 +23,9 @@ import { mapActions } from 'vuex'
 export default Vue.extend({
 	methods: {
 		...mapActions('scene', { _play: 'play' }),
+		...mapActions('score', ['set']),
 		play() {
+			this.set({ score: 0 })
 			this._play()
 		},
 	},
