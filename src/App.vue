@@ -1,18 +1,29 @@
 <template>
 	<div class="game-area">
-		<router-view></router-view>
+		<component :is="currentScene"></component>
 	</div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue'
-import Display from '@/components/PlayScene/Display.vue'
-import Controller from '@/components/PlayScene/Controler.vue'
+import { mapGetters } from 'vuex'
+import Title from '@/components/TitleScene/TitleView.vue'
+import Play from '@/components/PlayScene/PlayView.vue'
+import Result from '@/components/ResultScene/ResultView.vue'
 
 import { render } from '@/modules/icon'
 
+const components = { Title, Play, Result }
+type Components = typeof components
+
 export default Vue.extend({
-	components: { Display, Controller },
+	components,
+	computed: {
+		...mapGetters('scene', ['currentSceneKey']),
+		currentScene(): Components[keyof Components] {
+			return components[this.currentSceneKey as keyof Components]
+		},
+	},
 	mounted() {
 		render()
 	},

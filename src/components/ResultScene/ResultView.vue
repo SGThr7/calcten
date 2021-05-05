@@ -13,7 +13,7 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 import MenuButton from '@/components/UIParts/MenuButton.vue'
 
 export default Vue.extend({
@@ -22,8 +22,9 @@ export default Vue.extend({
 		...mapGetters('score', ['score']),
 	},
 	methods: {
+		...mapActions('scene', { setScene: 'set' }),
 		exit() {
-			this.$router.replace('title-view')
+			this.setScene({ scene: 'Title' })
 		},
 	},
 })

@@ -2,17 +2,15 @@
 	<div class="title-view">
 		<div class="title">calc10</div>
 		<div class="select-menu">
-			<router-link to="/play" custom v-slot="{ navigate }">
-				<div
-					class="menu-button"
-					@click="navigate"
-					@keypress.enter="navigate"
-					role="link"
-					tabindex="0"
-				>
-					Play
-				</div>
-			</router-link>
+			<div
+				class="menu-button"
+				@click="play"
+				@keypress.enter="play"
+				role="link"
+				tabindex="0"
+			>
+				Play
+			</div>
 			<div class="spacer"></div>
 		</div>
 	</div>
@@ -20,9 +18,17 @@
 
 <script lang="ts">
 import Vue from 'vue'
+import { mapActions } from 'vuex'
 
 export default Vue.extend({
-	//
+	methods: {
+		...mapActions('scene', { setScene: 'set' }),
+		...mapActions('score', { setScore: 'set' }),
+		play() {
+			this.setScore({ score: 0 })
+			this.setScene({ scene: 'Play' })
+		},
+	},
 })
 </script>
 
