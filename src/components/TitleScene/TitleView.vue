@@ -2,7 +2,7 @@
 	<div class="title-view">
 		<div class="title">calc10</div>
 		<div class="select-menu">
-			<menu-button @click="play"> Play </menu-button>
+			<menu-button @click="play" bindKey="KeyP"> Play </menu-button>
 			<div class="spacer"></div>
 		</div>
 	</div>
