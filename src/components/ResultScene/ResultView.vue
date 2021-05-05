@@ -6,7 +6,7 @@
 			<span class="value" id="val-score">{{ score }}</span>
 		</div>
 		<menu>
-			<menu-button @click="exit"> Exit </menu-button>
+			<menu-button @click="exit" bindKey="KeyE"> Exit </menu-button>
 		</menu>
 	</div>
 </template>
