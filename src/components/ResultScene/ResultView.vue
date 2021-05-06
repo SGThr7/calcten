@@ -14,7 +14,7 @@
 <script lang="ts">
 import Vue from 'vue'
 import { mapGetters, mapActions } from 'vuex'
-import MenuButton from '@/components/UIParts/MenuButton.vue'
+import MenuButton from '@/components/UIParts/Buttons/MenuButton.vue'
 
 export default Vue.extend({
 	components: { MenuButton },

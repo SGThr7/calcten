@@ -8,7 +8,7 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import RButton from '@/components/UIParts/RootButton.vue'
+import RButton from '@/components/UIParts/Buttons/RootButton.vue'
 
 export default Vue.extend({
 	components: { RButton },

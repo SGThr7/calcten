@@ -36,7 +36,7 @@ import Vue from 'vue'
 import { mapGetters, mapMutations } from 'vuex'
 import { Bracket, Operator } from '@/modules/operator'
 
-import KeyButton from '@/components/UIParts/KeyButton.vue'
+import KeyButton from '@/components/UIParts/Buttons/KeyButton.vue'
 import { keyBind } from '@/modules/keybinding'
 
 export default Vue.extend({
