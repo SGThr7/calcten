@@ -6,7 +6,7 @@
 			<span class="value" id="val-score">{{ score }}</span>
 		</div>
 		<menu>
-			<menu-button @click="exit"> Exit </menu-button>
+			<menu-button @click="exit" bindKey="KeyE"> Exit </menu-button>
 		</menu>
 	</div>
 </template>
@@ -14,7 +14,7 @@
 <script lang="ts">
 import Vue from 'vue'
 import { mapGetters, mapActions } from 'vuex'
-import MenuButton from '@/components/UIParts/MenuButton.vue'
+import MenuButton from '@/components/UIParts/Buttons/MenuButton.vue'
 
 export default Vue.extend({
 	components: { MenuButton },

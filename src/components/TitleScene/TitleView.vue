@@ -2,15 +2,7 @@
 	<div class="title-view">
 		<div class="title">calc10</div>
 		<div class="select-menu">
-			<div
-				class="menu-button"
-				@click="play"
-				@keypress.enter="play"
-				role="link"
-				tabindex="0"
-			>
-				Play
-			</div>
+			<menu-button @click="play" bindKey="KeyP"> Play </menu-button>
 			<div class="spacer"></div>
 		</div>
 	</div>
@@ -20,7 +12,10 @@
 import Vue from 'vue'
 import { mapActions } from 'vuex'
 
+import MenuButton from '@/components/UIParts/Buttons/MenuButton.vue'
+
 export default Vue.extend({
+	components: { MenuButton },
 	methods: {
 		...mapActions('scene', { setScene: 'set' }),
 		...mapActions('score', { setScore: 'set' }),
@@ -47,23 +42,4 @@ export default Vue.extend({
 	display: grid
 	grid-template-rows: repeat(1, 1fr) 1fr
 	justify-content: center
-
-.menu-button
-	font-family: 'Kanit'
-	font-size: 2.3em
-	cursor: pointer
-
-	width: 190px
-	box-sizing: border-box
-	border-radius: 15px
-
-	$button-color: lightgray
-	border: 6px solid $button-color
-	background-color: $button-color
-
-	transition-property: background-color
-	transition-duration: .3s
-
-	&:hover, &:focus
-		background-color: transparent
 </style>

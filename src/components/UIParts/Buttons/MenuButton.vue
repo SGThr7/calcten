@@ -1,8 +1,17 @@
 <template>
-	<button class="menu-button" tabindex="0" ref="button" v-on="$listeners">
+	<r-button class="menu-button" v-on="$listeners" v-bind="$attrs">
 		<slot></slot>
-	</button>
+	</r-button>
 </template>
+
+<script lang="ts">
+import Vue from 'vue'
+import RButton from '@/components/UIParts/Buttons/RootButton.vue'
+
+export default Vue.extend({
+	components: { RButton },
+})
+</script>
 
 <style lang="sass" scoped>
 .menu-button
