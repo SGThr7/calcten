@@ -3,27 +3,30 @@
 		<template v-for="bracket in brackets">
 			<key-button
 				:key="bracket.id"
-				:label="bracket"
 				:disabled="checkResult"
 				:bindKey="keyBind[bracket]"
 				@click="add({ sign: bracket })"
-			></key-button>
+			>
+				{{ bracket }}
+			</key-button>
 		</template>
 		<div class="spacer"></div>
 		<key-button
-			label="←"
 			:disabled="checkResult"
 			:bindKey="keyBind.remove"
 			@click="remove()"
-		></key-button>
+		>
+			←
+		</key-button>
 		<template v-for="op in operators">
 			<key-button
 				:key="op.id"
-				:label="op"
 				:disabled="checkResult"
 				:bindKey="keyBind[op]"
 				@click="add({ sign: op })"
-			></key-button>
+			>
+				{{ op }}
+			</key-button>
 		</template>
 	</div>
 </template>
@@ -31,9 +34,10 @@
 <script lang="ts">
 import Vue from 'vue'
 import { mapGetters, mapMutations } from 'vuex'
+import { Bracket, Operator } from '@/modules/operator'
+
 import KeyButton from '@/components/UIParts/KeyButton.vue'
 import { keyBind } from '@/modules/keybinding'
-import { Bracket, Operator } from '@/modules/operator'
 
 export default Vue.extend({
 	components: { KeyButton },

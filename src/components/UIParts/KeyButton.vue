@@ -1,50 +1,17 @@
 <template>
 	<div class="wrapper">
-		<input
-			type="button"
-			class="key"
-			:value="label"
-			:disabled="disabled"
-			@click="clickHandler"
-		/>
+		<r-button class="key" v-on="$listeners" v-bind="$attrs">
+			<slot></slot>
+		</r-button>
 	</div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue'
-import { Key } from '@/modules/keybinding'
+import RButton from '@/components/UIParts/RootButton.vue'
 
 export default Vue.extend({
-	props: {
-		label: {
-			type: String,
-			required: true,
-		},
-		disabled: {
-			type: Boolean,
-			default: false,
-		},
-		bindKey: {
-			type: Key,
-			required: false,
-		},
-	},
-	methods: {
-		clickHandler(event: MouseEvent) {
-			this.$emit('click', event)
-		},
-		keyHandler(event: KeyboardEvent) {
-			if (this.bindKey?.cmpEvent(event)) {
-				this.$el.querySelector<HTMLInputElement>('input.key')?.click()
-			}
-		},
-	},
-	mounted() {
-		window.addEventListener('keypress', this.keyHandler)
-	},
-	beforeDestroy() {
-		window.addEventListener('keypress', this.keyHandler)
-	},
+	components: { RButton },
 })
 </script>
 
