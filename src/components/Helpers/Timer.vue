@@ -6,6 +6,10 @@
 			:minutes="minutes"
 			:hours="hours"
 			:days="days"
+			:totalMilliseconds="totalMilliseconds"
+			:totalSeconds="totalSeconds"
+			:totalMinutes="totalMinutes"
+			:totalHours="totalHours"
 		></slot>
 	</span>
 </template>
@@ -35,6 +39,10 @@ export default Vue.extend({
 			default: function () {
 				return Date.now()
 			},
+		},
+		autoStart: {
+			type: Boolean,
+			default: false,
 		},
 	},
 	data() {
@@ -69,15 +77,13 @@ export default Vue.extend({
 		totalHours(): number {
 			return Math.floor(this.totalMilliseconds / MSHour)
 		},
-		totalDays(): number {
-			return Math.floor(this.totalMilliseconds / MSDay)
-		},
 	},
 	watch: {
 		$props: {
 			immediate: true,
 			handler() {
-				this.start()
+				this.totalMilliseconds = this.time
+				if (this.autoStart) this.start()
 			},
 		},
 	},
