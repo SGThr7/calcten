@@ -14,17 +14,18 @@
 			<span class="equal">=</span>
 			<span class="result">{{ Math.floor(result * 100) / 100 }}</span>
 		</div>
-		<result-checker></result-checker>
+		<effects></effects>
 	</div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue'
 import { mapGetters, mapMutations } from 'vuex'
-import ResultChecker from '@/components/Helpers/ResultChecker.vue'
+
+import Effects from '@/components/Effects/EffectManager.vue'
 
 export default Vue.extend({
-	components: { ResultChecker },
+	components: { Effects },
 	computed: {
 		...mapGetters('input', ['count', 'formula', 'result', 'checkResult']),
 		styleVars() {
