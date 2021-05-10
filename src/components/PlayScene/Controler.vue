@@ -3,7 +3,7 @@
 		<template v-for="bracket in brackets">
 			<key-button
 				:key="bracket.id"
-				:disabled="allowController"
+				:disabled="disableController"
 				:bindKey="keyBind[bracket]"
 				@click="add({ sign: bracket })"
 			>
@@ -12,7 +12,7 @@
 		</template>
 		<div class="spacer"></div>
 		<key-button
-			:disabled="allowController"
+			:disabled="disableController"
 			:bindKey="keyBind.remove"
 			@click="remove()"
 		>
@@ -21,7 +21,7 @@
 		<template v-for="op in operators">
 			<key-button
 				:key="op.id"
-				:disabled="allowController"
+				:disabled="disableController"
 				:bindKey="keyBind[op]"
 				@click="add({ sign: op })"
 			>
@@ -45,8 +45,8 @@ export default Vue.extend({
 	computed: {
 		...mapGetters('input', ['count', 'checkResult']),
 		...(mapGetters('status/play', ['status']) as { status: () => Mode }),
-		allowController() {
-			return this.checkResult || this.status === 'BeforePlay'
+		disableController() {
+			return this.checkResult || this.status !== 'Playing'
 		},
 		styleVars() {
 			return {
