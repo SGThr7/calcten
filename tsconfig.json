@@ -1,0 +1,14 @@
+{
+	"compilerOptions": {
+		"strict": true,
+		"target": "ES5",
+		"module": "ES2015",
+		"moduleResolution": "Node",
+		"sourceMap": true,
+		"paths": {
+			"@/*": [
+				"./src/*"
+			]
+		}
+	},
+}
