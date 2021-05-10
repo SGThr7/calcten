@@ -15,12 +15,18 @@ import StatusBar from '@/components/StatusBar/index.vue'
 
 export default Vue.extend({
 	components: { Display, Controller, StatusBar },
+	computed: {
+		finishTime: () => 1.5 * 1000,
+	},
 	methods: {
 		...mapActions('scene', { setScene: 'set' }),
-		...mapMutations('status/play', ['beforePlay']),
+		...mapMutations('status/play', ['finishPlay', 'beforePlay']),
 		timerEnd() {
-			this.beforePlay()
-			this.setScene({ scene: 'Result' })
+			this.finishPlay()
+			const timer = setTimeout(() => {
+				this.beforePlay()
+				this.setScene({ scene: 'Result' })
+			}, this.finishTime)
 		},
 	},
 })

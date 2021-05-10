@@ -38,7 +38,7 @@ export default Vue.extend({
 			return { '--numsCount': this.count }
 		},
 		isShow() {
-			return this.playStatus !== 'BeforePlay'
+			return this.playStatus === 'Playing'
 		},
 	},
 	methods: {
