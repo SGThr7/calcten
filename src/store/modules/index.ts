@@ -1,5 +1,5 @@
 import { Store } from 'vuex'
-const files = require.context('.', false, /\.ts$/)
+const files = require.context('.', true, /\.ts$/)
 
 const modules: Record<string, Store<unknown>> = {}
 for (const key of files.keys()) {

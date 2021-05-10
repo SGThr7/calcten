@@ -4,7 +4,9 @@
 			<div class="status-title">Time</div>
 			<div class="timer status-value">
 				<timer
+					ref="timer"
 					:time="time"
+					v-model="timerMethods"
 					v-slot="{ totalSeconds, milliseconds }"
 					@start="$emit('timer-start')"
 					@end="$emit('timer-end')"
@@ -35,10 +37,14 @@ export default Vue.extend({
 		return {
 			time: 60 * 1000,
 			tmpScore: 0,
+			timerMethods: {} as Record<string, () => void>,
 		}
 	},
 	computed: {
 		...mapGetters('score', ['score']),
+		...mapGetters('status/play', {
+			playStatus: 'status',
+		}),
 		animatedScore(): string {
 			return this.tmpScore.toFixed(0)
 		},
@@ -59,6 +65,11 @@ export default Vue.extend({
 	watch: {
 		score(newVal) {
 			gsap.to(this.$data, { duration: 0.5, tmpScore: newVal })
+		},
+		playStatus(newVal) {
+			if (newVal === 'Playing') {
+				this.timerMethods.start()
+			}
 		},
 	},
 })

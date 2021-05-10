@@ -44,6 +44,10 @@ export default Vue.extend({
 			type: Boolean,
 			default: false,
 		},
+		value: {
+			type: Object,
+			required: false,
+		},
 	},
 	data() {
 		return {
@@ -79,11 +83,23 @@ export default Vue.extend({
 		},
 	},
 	watch: {
-		$props: {
+		time: {
 			immediate: true,
 			handler() {
 				this.totalMilliseconds = this.time
+			},
+		},
+		autoStart: {
+			immediate: true,
+			handler() {
 				if (this.autoStart) this.start()
+				else this.pause
+			},
+		},
+		value: {
+			immediate: true,
+			handler() {
+				this.outMethods()
 			},
 		},
 	},
@@ -145,6 +161,25 @@ export default Vue.extend({
 			this.pause()
 			this.isCounting = false
 			this.$emit(Event.abort)
+		},
+		outMethods() {
+			const methods = {
+				start: this.start,
+				pause: this.pause,
+				continue: this.continue,
+				end: this.end,
+				abort: this.abort,
+			}
+			function cmpKeys(...objects: Array<Record<string, any> | undefined>) {
+				const keys = objects
+					.filter((el): el is object => typeof el === 'object')
+					.map(Object.keys)
+				const unionlen = new Set(
+					keys.reduce((prev, keys) => prev.concat(keys), [])
+				).size
+				return keys.every((keys) => keys.length === unionlen)
+			}
+			if (!cmpKeys(methods, this.value)) this.$emit('input', methods)
 		},
 	},
 	beforeDestroy() {
