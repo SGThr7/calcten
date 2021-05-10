@@ -1,5 +1,5 @@
 <template>
-	<div v-show="isShow">
+	<div class="countdown" v-show="isShow">
 		<timer
 			:time="time"
 			:autoStart="true"
@@ -41,3 +41,9 @@ export default Vue.extend({
 	},
 })
 </script>
+
+<style lang="sass" scoped>
+.countdown
+	font-family: 'Kanit'
+	font-size: 4em
+</style>
