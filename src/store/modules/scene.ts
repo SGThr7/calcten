@@ -2,7 +2,7 @@ import { Module } from 'vuex'
 import rootState from '@/store'
 
 type SceneState = {
-	currentSceneKey: string
+	currentSceneKey: 'Title' | 'Play' | 'Result'
 }
 const state: SceneState = {
 	currentSceneKey: 'Title',
