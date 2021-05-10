@@ -4,7 +4,6 @@
 			<div class="status-title">Time</div>
 			<div class="timer status-value">
 				<timer
-					ref="timer"
 					:time="time"
 					v-model="timerMethods"
 					v-slot="{ totalSeconds, milliseconds }"
