@@ -8,17 +8,25 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import { mapActions } from 'vuex'
+import { mapActions, mapMutations } from 'vuex'
 import Display from '@/components/PlayScene/Display.vue'
 import Controller from '@/components/PlayScene/Controler.vue'
 import StatusBar from '@/components/StatusBar/index.vue'
 
 export default Vue.extend({
 	components: { Display, Controller, StatusBar },
+	computed: {
+		finishTime: () => 1.5 * 1000,
+	},
 	methods: {
 		...mapActions('scene', { setScene: 'set' }),
+		...mapMutations('status/play', ['finishPlay', 'beforePlay']),
 		timerEnd() {
-			this.setScene({ scene: 'Result' })
+			this.finishPlay()
+			const timer = setTimeout(() => {
+				this.beforePlay()
+				this.setScene({ scene: 'Result' })
+			}, this.finishTime)
 		},
 	},
 })

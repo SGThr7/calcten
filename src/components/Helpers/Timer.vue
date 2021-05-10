@@ -6,6 +6,10 @@
 			:minutes="minutes"
 			:hours="hours"
 			:days="days"
+			:totalMilliseconds="totalMilliseconds"
+			:totalSeconds="totalSeconds"
+			:totalMinutes="totalMinutes"
+			:totalHours="totalHours"
 		></slot>
 	</span>
 </template>
@@ -35,6 +39,14 @@ export default Vue.extend({
 			default: function () {
 				return Date.now()
 			},
+		},
+		autoStart: {
+			type: Boolean,
+			default: false,
+		},
+		value: {
+			type: Object,
+			required: false,
 		},
 	},
 	data() {
@@ -69,15 +81,25 @@ export default Vue.extend({
 		totalHours(): number {
 			return Math.floor(this.totalMilliseconds / MSHour)
 		},
-		totalDays(): number {
-			return Math.floor(this.totalMilliseconds / MSDay)
-		},
 	},
 	watch: {
-		$props: {
+		time: {
 			immediate: true,
 			handler() {
-				this.start()
+				this.totalMilliseconds = this.time
+			},
+		},
+		autoStart: {
+			immediate: true,
+			handler() {
+				if (this.autoStart) this.start()
+				else this.pause
+			},
+		},
+		value: {
+			immediate: true,
+			handler() {
+				this.outMethods()
 			},
 		},
 	},
@@ -139,6 +161,25 @@ export default Vue.extend({
 			this.pause()
 			this.isCounting = false
 			this.$emit(Event.abort)
+		},
+		outMethods() {
+			const methods = {
+				start: this.start,
+				pause: this.pause,
+				continue: this.continue,
+				end: this.end,
+				abort: this.abort,
+			}
+			function cmpKeys(...objects: Array<Record<string, any> | undefined>) {
+				const keys = objects
+					.filter((el): el is object => typeof el === 'object')
+					.map(Object.keys)
+				const unionlen = new Set(
+					keys.reduce((prev, keys) => prev.concat(keys), [])
+				).size
+				return keys.every((keys) => keys.length === unionlen)
+			}
+			if (!cmpKeys(methods, this.value)) this.$emit('input', methods)
 		},
 	},
 	beforeDestroy() {
