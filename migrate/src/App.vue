@@ -1,16 +1,25 @@
 <template>
-	<div class="game">Game Area</div>
+	<div class="game">
+		<component :is="'Title'"></component>
+	</div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue'
 
+import Title from '@/components/Scenes/Title.vue'
+
 export default defineComponent({
 	name: 'App',
+	components: { Title },
 })
 </script>
 
 <style lang="sass">
+// font-family: 'Balsamiq Sans', cursive
+// font-family: 'Kanit', sans-serif
+// font-family: 'New Tegomin', serif
+
 html, body, #app
 	height: 100%
 	width: 100%
