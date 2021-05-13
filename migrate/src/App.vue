@@ -1,27 +1,40 @@
 <template>
-	<img alt="Vue logo" src="./assets/logo.png" />
-	<HelloWorld msg="Welcome to Your Vue.js + TypeScript App" />
+	<div class="game">Game Area</div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-import HelloWorld from './components/HelloWorld.vue'
 
 export default defineComponent({
 	name: 'App',
-	components: {
-		HelloWorld,
-	},
 })
 </script>
 
-<style lang="scss">
-#app {
-	font-family: Avenir, Helvetica, Arial, sans-serif;
-	-webkit-font-smoothing: antialiased;
-	-moz-osx-font-smoothing: grayscale;
-	text-align: center;
-	color: #2c3e50;
-	margin-top: 60px;
-}
+<style lang="sass">
+html, body, #app
+	height: 100%
+	width: 100%
+	margin: 0
+
+html
+	user-select: none
+	-webkit-user-select: none
+	-moz-user-select: none
+	-ms-user-select: none
+
+#app
+	display: flex
+	justify-content: center
+	align-items: center
+
+.game
+	height: 100%
+	width: 100%
+	max-height: 500px
+	max-width: 400px
+	padding: 10px
+	border: 1px solid
+
+	font-size: min(1rem, 4vw)
+	text-align: center
 </style>
