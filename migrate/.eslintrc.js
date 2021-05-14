@@ -28,7 +28,6 @@ module.exports = {
 		quotes: ['error', 'single'],
 		'quote-props': ['error', 'as-needed'],
 		semi: ['error', 'never'],
-		'comma-dangle': ['error', 'always-multiline'],
 	},
 	overrides: [
 		{

@@ -1,17 +1,27 @@
 <template>
 	<div class="game">
-		<component :is="'Title'"></component>
+		<component :is="scene"></component>
 	</div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { computed, defineComponent } from 'vue'
 
-import Title from '@/components/Scenes/Title.vue'
+import { useStore } from '@/store'
+import { components } from '@/components/Scenes'
 
 export default defineComponent({
 	name: 'App',
-	components: { Title },
+	components,
+	setup() {
+		const store = useStore()
+
+		const scene = computed(() => store.getters.scene)
+
+		return {
+			scene,
+		}
+	},
 })
 </script>
 
