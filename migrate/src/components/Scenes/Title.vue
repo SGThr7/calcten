@@ -2,7 +2,7 @@
 	<div class="title">
 		<div class="title-text">calc10</div>
 		<div class="menu">
-			<button @click="play">Play</button>
+			<menu-button @click="play">Play</menu-button>
 		</div>
 	</div>
 </template>
@@ -11,9 +11,11 @@
 import { defineComponent } from 'vue'
 
 import { useStore } from '@/store'
+import MenuButton from '@/components/UI/Buttons/Menu.vue'
 
 export default defineComponent({
 	name: 'Title',
+	components: { MenuButton },
 	setup() {
 		const store = useStore()
 		const play = () => {
