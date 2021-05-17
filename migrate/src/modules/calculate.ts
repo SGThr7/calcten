@@ -1,20 +1,25 @@
 import CustomError from 'extensible-custom-error'
 import { BracketList, Operator, OperatorList } from '@/modules/operator'
 
+type FormulaData =
+	| {
+			type: 'operator'
+			operator: Operator
+			left: FormulaTree
+			right: FormulaTree
+	  }
+	| {
+			type: 'number'
+			number: number
+	  }
 export class FormulaTree {
-	readonly data:
-		| {
-				type: 'operator'
-				operator: Operator
-				left: FormulaTree
-				right: FormulaTree
-		  }
-		| {
-				type: 'number'
-				number: number
-		  }
+	readonly data: FormulaData
 
-	constructor(formula: string) {
+	constructor(data: FormulaData) {
+		this.data = data
+	}
+
+	static fromIN(formula: string): FormulaTree {
 		formula = formula.trim()
 
 		// Remove outside pair parentheses
@@ -28,8 +33,7 @@ export class FormulaTree {
 		// If number
 		const n = Number(formula)
 		if (!isNaN(n)) {
-			this.data = { type: 'number', number: n }
-			return
+			return new FormulaTree({ type: 'number', number: n })
 		}
 
 		// If formula
@@ -61,12 +65,50 @@ export class FormulaTree {
 		if (i === -1 || depth === Infinity || !(operator instanceof Operator))
 			throw new FormulaSyntaxError(`Invalid formula (got: "${formula}")`)
 
-		this.data = {
+		return new FormulaTree({
 			type: 'operator',
 			operator,
-			left: new FormulaTree(formula.slice(0, i)),
-			right: new FormulaTree(formula.slice(i + 1)),
+			left: FormulaTree.fromIN(formula.slice(0, i)),
+			right: FormulaTree.fromIN(formula.slice(i + 1)),
+		})
+	}
+
+	static fromRPN(rpn: (string | number)[]): FormulaTree {
+		const res: FormulaTree[] = []
+		for (const t of rpn) {
+			const n = Number(t)
+			if (!isNaN(n)) {
+				res.push(
+					new FormulaTree({
+						type: 'number',
+						number: n,
+					})
+				)
+				continue
+			} else {
+				const operator = OperatorList[t]
+				if (!(operator instanceof Operator))
+					throw new FormulaSyntaxError(`Invalid operator (got: "${operator}")`)
+
+				// !right first
+				const right = res.pop()
+				const left = res.pop()
+				if (!(left && right))
+					throw new FormulaSyntaxError(`Invalid RPN (RPN: "${rpn}")`)
+
+				res.push(
+					new FormulaTree({
+						type: 'operator',
+						operator,
+						left,
+						right,
+					})
+				)
+			}
 		}
+
+		if (res.length === 1 && res[0] instanceof FormulaTree) return res[0]
+		else throw new FormulaSyntaxError(`Something error (RPN: "${rpn}")`)
 	}
 
 	toRPNString(spacer = ' '): string {

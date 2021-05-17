@@ -1,60 +1,67 @@
 import { FormulaTree } from '@/modules/calculate'
 import { BracketList, OperatorList } from '@/modules/operator'
 
-function checkFormula(f: string) {
-	const ft = new FormulaTree(f)
-	expect(ft.calculate()).toBe(eval(f))
-}
-
 describe('caluclate.ts', () => {
-	it('none', () => {
-		const ft = new FormulaTree('2 _ 3')
-		expect(ft.calculate()).toBe(2)
+	describe('from Infix Notation', () => {
+		it.each([['2 _ 3', 2]])('formula "%s"', (f, ans) => {
+			const ft = FormulaTree.fromIN(f)
+			expect(ft.calculate()).toBe(ans)
+		})
+
+		it.each([
+			'1 + 2',
+			'1 - 2',
+			'1 * 2',
+			'1 / 2',
+			'1 + 2 * 3 - 4 / 2',
+			'(1 + 2) * ( 4 - 3 )',
+		])('formula "%s"', (f) => {
+			const ft = FormulaTree.fromIN(f)
+			expect(ft.calculate()).toBe(eval(f))
+		})
+
+		it('convert to RPN', () => {
+			const f = FormulaTree.fromIN('(1 + 2) *  4 - 3 ')
+			const spacer = ','
+			const ans = [
+				1,
+				2,
+				OperatorList.plus,
+				4,
+				OperatorList.times,
+				3,
+				OperatorList.minus,
+			].join(spacer)
+			expect(f.toRPNString(spacer)).toBe(ans)
+		})
+		it('convert to IN', () => {
+			const f = FormulaTree.fromIN('(1 + 2) *  4 - 3 ')
+			const spacer = ','
+			const ans = [
+				BracketList.lparen + '1',
+				OperatorList.plus,
+				'2' + BracketList.rparen,
+				OperatorList.times,
+				4,
+				OperatorList.minus,
+				3,
+			].join(spacer)
+			expect(f.toINString(spacer)).toBe(ans)
+		})
 	})
-	it('add', () => {
-		checkFormula('1 + 2')
-	})
-	it('sub', () => {
-		checkFormula('1 - 2')
-	})
-	it('times', () => {
-		checkFormula('1 * 2')
-	})
-	it('div', () => {
-		checkFormula('1 / 2')
-	})
-	it('respect calculate priority', () => {
-		checkFormula('1 + 2 * 3 - 4 / 2')
-	})
-	it('with parentheses', () => {
-		checkFormula('(1 + 2) * ( 4 - 3 )')
-	})
-	it('convert to RPN', () => {
-		const f = new FormulaTree('(1 + 2) *  4 - 3 ')
-		const spacer = ','
-		const ans = [
-			1,
-			2,
-			OperatorList.plus,
-			4,
-			OperatorList.times,
-			3,
-			OperatorList.minus,
-		].join(spacer)
-		expect(f.toRPNString(spacer)).toBe(ans)
-	})
-	it('convert to IN', () => {
-		const f = new FormulaTree('(1 + 2) *  4 - 3 ')
-		const spacer = ','
-		const ans = [
-			BracketList.lparen + '1',
-			OperatorList.plus,
-			'2' + BracketList.rparen,
-			OperatorList.times,
-			4,
-			OperatorList.minus,
-			3,
-		].join(spacer)
-		expect(f.toINString(spacer)).toBe(ans)
+
+	describe('from Reverse Polish Notation', () => {
+		it.each([
+			['2 3 _', 2],
+			['1 2 +', 3],
+			['1 2 -', -1],
+			['1 2 *', 2],
+			['1 2 /', 1 / 2],
+			['1 2 + 2 3 + *', (1 + 2) * (2 + 3)],
+			['1 2 + 3 + 1 2 3 + + *', (1 + 2 + 3) * (1 + 2 + 3)],
+		])('formula "%s"', (f, ans) => {
+			const ft = FormulaTree.fromRPN(f.split(' '))
+			expect(ft.calculate()).toBe(ans)
+		})
 	})
 })

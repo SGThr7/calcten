@@ -9,7 +9,7 @@ export default defineComponent({
 	components: { Controller },
 	setup() {
 		const { formula, refresh, addOperator, removeOperator } = manageFormula(4)
-		const ftree = computed(() => new FormulaTree(formula.value.join('')))
+		const ftree = computed(() => FormulaTree.fromIN(formula.value.join('')))
 
 		return () =>
 			h('div', { class: 'play' }, [
