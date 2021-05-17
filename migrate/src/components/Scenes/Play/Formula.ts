@@ -33,12 +33,25 @@ export default function manageFormula(numbersCount = 4): ManageFormula {
 	function* iterFormula() {
 		let inum = 0
 		let iop = 0
+		let nbrace = 0
 		while (inum < numbersCount) {
 			let n = numbers[inum].toString()
-			for (; gets(BracketList)(operators[iop]) === BracketList.lparen; iop += 1)
+			for (
+				;
+				gets(BracketList)(operators[iop]) === BracketList.lparen;
+				iop += 1
+			) {
 				n = gets(BracketList)(operators[iop]) + n
-			for (; gets(BracketList)(operators[iop]) === BracketList.rparen; iop += 1)
+				nbrace += 1
+			}
+			for (
+				;
+				gets(BracketList)(operators[iop]) === BracketList.rparen;
+				iop += 1
+			) {
 				n += gets(BracketList)(operators[iop])
+				nbrace -= 1
+			}
 			yield n
 
 			if (inum < numbersCount - 1)
@@ -48,6 +61,7 @@ export default function manageFormula(numbersCount = 4): ManageFormula {
 			inum += 1
 			iop += 1
 		}
+		for (let i = 0; i < nbrace; i += 1) yield BracketList.rparen.toString()
 	}
 	const formula = computed(() => [...iterFormula()])
 
