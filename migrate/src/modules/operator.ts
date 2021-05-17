@@ -75,6 +75,12 @@ export const OperatorList: OperatorList = {
 		return this.div
 	},
 } as const
+export function* OperatorsIter(): Generator<Operator> {
+	yield OperatorList.plus
+	yield OperatorList.minus
+	yield OperatorList.times
+	yield OperatorList.div
+}
 
 export class Bracket extends FormulaSign {}
 
@@ -100,3 +106,8 @@ export const BracketList: BracketList = {
 		return this.rparen
 	},
 } as const
+
+export function* BracketsIter(): Generator<Bracket> {
+	yield BracketList.lparen
+	yield BracketList.rparen
+}
