@@ -15,6 +15,7 @@ describe('caluclate.ts', () => {
 			'1 / 2',
 			'1 + 2 * 3 - 4 / 2',
 			'(1 + 2) * ( 4 - 3 )',
+			'((1 + 2)) * 3',
 		])('formula "%s"', (f) => {
 			const ft = FormulaTree.fromIN(f)
 			expect(ft.calculate()).toBe(eval(f))

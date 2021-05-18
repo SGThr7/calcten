@@ -19,16 +19,31 @@ export class FormulaTree {
 		this.data = data
 	}
 
+	// tmp fn name
+	static isSurroundedByParen(formula: string): boolean {
+		if (
+			BracketList[formula[0]] === BracketList.lparen &&
+			BracketList[formula[formula.length - 1]] === BracketList.rparen
+		) {
+			let depth = 0
+			for (let i = 0; i < formula.length; i += 1) {
+				const b = BracketList[formula[i]]
+				if (b === BracketList.lparen) depth += 1
+				else if (b === BracketList.rparen) depth -= 1
+				if (depth === 0)
+					if (i === formula.length - 1) return true
+					else return false
+			}
+		}
+		return false
+	}
+
 	static fromIN(formula: string): FormulaTree {
 		formula = formula.trim()
 
 		// Remove outside pair parentheses
-		if (
-			BracketList[formula[0]] === BracketList.lparen &&
-			BracketList[formula[formula.length - 1]] === BracketList.rparen &&
-			formula.indexOf(formula[formula.length - 1]) === formula.length - 1
-		)
-			formula = formula.slice(1, -1)
+		if (this.isSurroundedByParen(formula))
+			return this.fromIN(formula.slice(1, -1))
 
 		// If number
 		const n = Number(formula)
