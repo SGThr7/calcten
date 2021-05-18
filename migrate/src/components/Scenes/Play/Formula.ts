@@ -67,8 +67,6 @@ export default function manageFormula(numbersCount = 4): ManageFormula {
 			nlparen += count
 			return
 		} else if (b === BracketList.rparen) return
-
-		throw new Error(`Unknown operator "${operator}"`)
 	}
 
 	const addOperator = (operator: string) => {
@@ -79,7 +77,7 @@ export default function manageFormula(numbersCount = 4): ManageFormula {
 	}
 	const removeOperator = () => {
 		countOperator(operators[operators.length - 1], -1)
-		operators.length -= 1
+		if (operators.length > 0) operators.length -= 1
 	}
 
 	function* iterFormula() {
