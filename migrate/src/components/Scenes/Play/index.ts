@@ -8,7 +8,8 @@ export default defineComponent({
 	name: 'Play',
 	components: { Controller },
 	setup() {
-		const { formula, refresh, addOperator, removeOperator } = manageFormula(4)
+		const { formula, refresh, addOperator, removeOperator, allowAddOperator } =
+			manageFormula(4)
 		const ftree = computed(() => FormulaTree.fromIN(formula.value.join('')))
 
 		return () =>
@@ -19,7 +20,7 @@ export default defineComponent({
 					ftree.value.calculate(),
 					h('div', { onClick: refresh }, 'refresh'),
 				]),
-				h(Controller, { addOperator, removeOperator }),
+				h(Controller, { addOperator, removeOperator, allowAddOperator }),
 			])
 	},
 })

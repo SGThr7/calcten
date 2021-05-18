@@ -14,26 +14,44 @@ export default defineComponent({
 			type: Function,
 			required: true,
 		},
+		allowAddOperator: {
+			type: Function,
+			default: () => true,
+		},
 	},
 	render() {
 		const children: VNodeArrayChildren = []
 		for (const bracket of BracketsIter())
 			children.push(
-				h(Key, { onClick: () => this.addOperator(bracket.toString()) }, () =>
-					bracket.toString()
+				h(
+					Key,
+					{
+						onClick: () => this.addOperator(bracket.toString()),
+						disabled: !this.allowAddOperator(bracket.toString()),
+					},
+					() => bracket.toString()
 				)
 			)
 		children.push(
 			h(
 				Key,
-				{ onClick: () => this.removeOperator(), class: 'remove-key' },
+				{
+					onClick: () => this.removeOperator(),
+					class: 'remove-key',
+					disabled: !this.allowAddOperator(),
+				},
 				() => '←'
 			)
 		)
 		for (const operator of OperatorsIter())
 			children.push(
-				h(Key, { onClick: () => this.addOperator(operator.toString()) }, () =>
-					operator.toString()
+				h(
+					Key,
+					{
+						onClick: () => this.addOperator(operator.toString()),
+						disabled: !this.allowAddOperator(operator.toString()),
+					},
+					() => operator.toString()
 				)
 			)
 		return h('div', { class: 'controller' }, children)

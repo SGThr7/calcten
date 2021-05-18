@@ -9,11 +9,14 @@ interface ManageFormula {
 	refresh: () => void
 	addOperator: (operator: string) => void
 	removeOperator: () => void
+	allowAddOperator: (operator: string) => boolean
 }
 
 export default function manageFormula(numbersCount = 4): ManageFormula {
 	const numbers = reactive<number[]>([])
 	const operators = reactive<string[]>([])
+	let noperator = 0
+	let nlparen = 0
 
 	const refresh = () => {
 		console.log('refresh')
@@ -23,10 +26,56 @@ export default function manageFormula(numbersCount = 4): ManageFormula {
 	}
 	refresh()
 
+	const allowAddOperator = (operator: string): boolean => {
+		const o = OperatorList[operator]
+		const b = BracketList[operator]
+		if (o)
+			if (noperator < numbersCount - 1)
+				// Operator limit is `numbersCount - 1`
+				return true
+			else;
+		else if (b)
+			if (b === BracketList.lparen)
+				if (
+					Math.min(numbersCount - 1 - nlparen, numbersCount - 1 - noperator) > 0
+				)
+					// Disallow waste left paren
+					return true
+				else;
+			else if (b === BracketList.rparen)
+				if (nlparen > operators.length - noperator - nlparen)
+					// `nlparen > nrparen`
+					return true
+				else;
+			else;
+		// Unknown operator
+		else return true
+
+		return false
+	}
+	const countOperator = (operator: string, count: number): void => {
+		const o = OperatorList[operator]
+		if (o) {
+			noperator += count
+			return
+		}
+		const b = BracketList[operator]
+		if (b === BracketList.lparen) {
+			nlparen += count
+			return
+		} else if (b === BracketList.rparen) return
+
+		throw new Error(`Unknown operator "${operator}"`)
+	}
+
 	const addOperator = (operator: string) => {
-		operators[operators.length] = operator
+		if (allowAddOperator(operator)) {
+			countOperator(operator, 1)
+			operators[operators.length] = operator
+		}
 	}
 	const removeOperator = () => {
+		countOperator(operators[operators.length - 1], -1)
 		operators.length -= 1
 	}
 
@@ -72,5 +121,6 @@ export default function manageFormula(numbersCount = 4): ManageFormula {
 		refresh,
 		addOperator,
 		removeOperator,
+		allowAddOperator,
 	}
 }
