@@ -23,6 +23,9 @@ export default function manageFormula(numbersCount = 4): ManageFormula {
 		for (let i = 0; i < numbersCount; i++) {
 			numbers[i] = Math.floor(Math.random() * 10)
 		}
+		operators.length = 0
+		noperator = 0
+		nlparen = 0
 	}
 	refresh()
 
