@@ -15,7 +15,7 @@ export default defineComponent({
 			removeOperator,
 			allowAddOperator: _allowAddOperator,
 			isInputFinish,
-		} = manageFormula(4)
+		} = manageFormula(4, 10)
 		const result = computed(() =>
 			FormulaTree.fromIN(formula.value.join('')).calculate()
 		)

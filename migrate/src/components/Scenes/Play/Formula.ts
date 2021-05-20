@@ -1,6 +1,7 @@
 import { computed, ComputedRef, reactive, readonly, ref } from 'vue'
 import { BracketList, OperatorList } from '@/modules/operator'
 import { gets } from '@/modules/helper'
+import { FormulaTree } from '@/modules/calculate'
 
 interface ManageFormula {
 	numbers: readonly number[]
@@ -13,17 +14,70 @@ interface ManageFormula {
 	isInputFinish: ComputedRef<boolean>
 }
 
-export default function manageFormula(numbersCount = 4): ManageFormula {
+export default function manageFormula(
+	numbersCount: number,
+	answer: number
+): ManageFormula {
 	const numbers = reactive<number[]>([])
 	const operators = reactive<string[]>([])
 	const noperator = ref(0)
 	let nlparen = 0
 
-	const refresh = () => {
-		console.log('refresh')
-		for (let i = 0; i < numbersCount; i++) {
-			numbers[i] = Math.floor(Math.random() * 10)
+	const solve = (numbers: number[], answer: number) => {
+		if (numbers.length < 2)
+			throw new Error('numbers length must be grater than 2')
+		const nums = numbers.map(
+			(number) => new FormulaTree({ type: 'number', number })
+		)
+		const ops = [
+			OperatorList.plus,
+			OperatorList.minus,
+			OperatorList.times,
+			OperatorList.div,
+		]
+		function* generateFormula(fs: FormulaTree[]): Generator<FormulaTree> {
+			if (fs.length === 1) {
+				yield fs[0]
+				return
+			}
+
+			for (const op of ops) {
+				for (let i = 0; i < fs.length - 1; i += 1) {
+					const nfs = fs
+						.slice(0, i)
+						.concat(
+							new FormulaTree({
+								type: 'operator',
+								operator: op,
+								left: fs[i],
+								right: fs[i + 1],
+							})
+						)
+						.concat(fs.slice(i + 2))
+					yield* generateFormula(nfs)
+				}
+			}
 		}
+		const res: Record<string, FormulaTree> = {}
+		for (const g of generateFormula(nums)) {
+			if (g.calculate() === answer) res[g.toINString()] = g
+		}
+		return Object.values(res)
+	}
+
+	const refresh = () => {
+		const randomize = () => {
+			for (let i = 0; i < numbersCount; i++) {
+				numbers[i] = Math.floor(Math.random() * 10)
+			}
+			return numbers
+		}
+		let ans
+		for (;;) {
+			ans = solve(randomize(), answer)
+			if (ans.length) break
+		}
+		console.log(ans.map((f) => f.toINString()))
 		operators.length = 0
 		noperator.value = 0
 		nlparen = 0
