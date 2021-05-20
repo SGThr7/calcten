@@ -1,4 +1,4 @@
-import { computed, ComputedRef, reactive, readonly } from 'vue'
+import { computed, ComputedRef, reactive, readonly, ref } from 'vue'
 import { BracketList, OperatorList } from '@/modules/operator'
 import { gets } from '@/modules/helper'
 
@@ -10,12 +10,13 @@ interface ManageFormula {
 	addOperator: (operator: string) => void
 	removeOperator: () => void
 	allowAddOperator: (operator: string) => boolean
+	isInputFinish: ComputedRef<boolean>
 }
 
 export default function manageFormula(numbersCount = 4): ManageFormula {
 	const numbers = reactive<number[]>([])
 	const operators = reactive<string[]>([])
-	let noperator = 0
+	const noperator = ref(0)
 	let nlparen = 0
 
 	const refresh = () => {
@@ -24,7 +25,7 @@ export default function manageFormula(numbersCount = 4): ManageFormula {
 			numbers[i] = Math.floor(Math.random() * 10)
 		}
 		operators.length = 0
-		noperator = 0
+		noperator.value = 0
 		nlparen = 0
 	}
 	refresh()
@@ -33,20 +34,23 @@ export default function manageFormula(numbersCount = 4): ManageFormula {
 		const o = OperatorList[operator]
 		const b = BracketList[operator]
 		if (o)
-			if (noperator < numbersCount - 1)
+			if (noperator.value < numbersCount - 1)
 				// Operator limit is `numbersCount - 1`
 				return true
 			else;
 		else if (b)
 			if (b === BracketList.lparen)
 				if (
-					Math.min(numbersCount - 1 - nlparen, numbersCount - 1 - noperator) > 0
+					Math.min(
+						numbersCount - 1 - nlparen,
+						numbersCount - 1 - noperator.value
+					) > 0
 				)
 					// Disallow waste left paren
 					return true
 				else;
 			else if (b === BracketList.rparen)
-				if (nlparen > operators.length - noperator - nlparen)
+				if (nlparen > operators.length - noperator.value - nlparen)
 					// `nlparen > nrparen`
 					return true
 				else;
@@ -59,7 +63,7 @@ export default function manageFormula(numbersCount = 4): ManageFormula {
 	const countOperator = (operator: string, count: number): void => {
 		const o = OperatorList[operator]
 		if (o) {
-			noperator += count
+			noperator.value += count
 			return
 		}
 		const b = BracketList[operator]
@@ -79,6 +83,10 @@ export default function manageFormula(numbersCount = 4): ManageFormula {
 		countOperator(operators[operators.length - 1], -1)
 		if (operators.length > 0) operators.length -= 1
 	}
+
+	const isInputFinish = computed<boolean>(
+		() => noperator.value === numbersCount - 1
+	)
 
 	function* iterFormula() {
 		let inum = 0
@@ -123,5 +131,6 @@ export default function manageFormula(numbersCount = 4): ManageFormula {
 		addOperator,
 		removeOperator,
 		allowAddOperator,
+		isInputFinish,
 	}
 }
