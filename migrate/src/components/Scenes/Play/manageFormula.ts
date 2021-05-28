@@ -146,7 +146,7 @@ export default function manageFormula(
 		let inum = 0
 		let iop = 0
 		let nbrace = 0
-		while (inum < numbersCount) {
+		while (inum < numbersCount - 1) {
 			let n = numbers[inum].toString()
 			for (
 				;
@@ -173,7 +173,8 @@ export default function manageFormula(
 			inum += 1
 			iop += 1
 		}
-		for (let i = 0; i < nbrace; i += 1) yield BracketList.rparen.toString()
+		yield numbers[inum].toString() +
+			BracketList.rparen.toString().repeat(nbrace)
 	}
 	const formula = computed(() => [...iterFormula()])
 

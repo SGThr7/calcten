@@ -1,12 +1,12 @@
 import { computed, defineComponent, h, onBeforeUnmount, watch } from 'vue'
 import { FormulaTree } from '@/modules/calculate'
+import Display from './Display.vue'
 import Controller from './Controller.vue'
-import manageFormula from './Formula'
+import manageFormula from './manageFormula'
 import './play.sass'
 
 export default defineComponent({
 	name: 'Play',
-	components: { Controller },
 	setup() {
 		const {
 			formula,
@@ -43,12 +43,9 @@ export default defineComponent({
 
 		return () =>
 			h('div', { class: 'play' }, [
-				h('div', [
-					formula.value,
-					'=',
-					result.value,
-					h('div', { onClick: refresh }, 'refresh'),
-				]),
+				h(Display, {
+					formula: formula.value,
+				}),
 				h(Controller, {
 					addOperator,
 					removeOperator,
