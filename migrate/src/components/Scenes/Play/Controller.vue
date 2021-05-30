@@ -1,6 +1,6 @@
 <script lang="ts">
 import { h, VNodeArrayChildren, defineComponent } from 'vue'
-import { BracketsIter, OperatorsIter } from '@/modules/operator'
+import { Brackets, Operators } from '@/modules/operator'
 import Key from '@/components/UI/Buttons/Key.vue'
 
 export default defineComponent({
@@ -21,7 +21,7 @@ export default defineComponent({
 	},
 	render() {
 		const children: VNodeArrayChildren = []
-		for (const bracket of BracketsIter())
+		for (const bracket of Brackets)
 			children.push(
 				h(
 					Key,
@@ -43,7 +43,7 @@ export default defineComponent({
 				() => '←'
 			)
 		)
-		for (const operator of OperatorsIter())
+		for (const operator of Operators)
 			children.push(
 				h(
 					Key,

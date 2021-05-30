@@ -1,5 +1,5 @@
 import { FormulaTree } from '@/modules/calculate'
-import { BracketList, OperatorList } from '@/modules/operator'
+import { Brackets, Operators } from '@/modules/operator'
 
 type FormulaSign = string | number
 type Formula = (FormulaSign | FormulaSign[])[]
@@ -7,10 +7,9 @@ function joinFormula(formula: Formula, separator = ''): string {
 	return formula.reduce<string>((res, token, i) => {
 		if (i !== 0) res += separator
 		if (Array.isArray(token))
-			res +=
-				BracketList.lparen + joinFormula(token, separator) + BracketList.rparen
+			res += Brackets.lparen + joinFormula(token, separator) + Brackets.rparen
 		else if (typeof token === 'number') res += token.toString()
-		else res += OperatorList[token]
+		else res += Operators.get(token)
 		return res
 	}, '')
 }

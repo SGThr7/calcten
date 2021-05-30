@@ -1,5 +1,5 @@
 import CustomError from 'extensible-custom-error'
-import { BracketList, Operator, OperatorList } from '@/modules/operator'
+import { Operator, Brackets, Operators } from '@/modules/operator'
 
 type FormulaData =
 	| {
@@ -22,14 +22,14 @@ export class FormulaTree {
 	// tmp fn name
 	static isSurroundedByParen(formula: string): boolean {
 		if (
-			BracketList[formula[0]] === BracketList.lparen &&
-			BracketList[formula[formula.length - 1]] === BracketList.rparen
+			Brackets.cmp('lparen', formula[0]) &&
+			Brackets.cmp('rparen', formula[formula.length - 1])
 		) {
 			let depth = 0
 			for (let i = 0; i < formula.length; i += 1) {
-				const b = BracketList[formula[i]]
-				if (b === BracketList.lparen) depth += 1
-				else if (b === BracketList.rparen) depth -= 1
+				const token = formula[i]
+				if (Brackets.cmp('lparen', token)) depth += 1
+				else if (Brackets.cmp('rparen', token)) depth -= 1
 				if (depth === 0)
 					if (i === formula.length - 1) return true
 					else return false
@@ -57,11 +57,10 @@ export class FormulaTree {
 		let depth = 0
 		for (let k = 0; k < formula.length; k += 1) {
 			const t = formula[k]
-			const b = BracketList[t]
-			const o = OperatorList[t]
-			if (b === BracketList.lparen) {
+			const o = Operators.get(t)
+			if (Brackets.cmp('lparen', t)) {
 				depth += 1
-			} else if (b === BracketList.rparen) {
+			} else if (Brackets.cmp('rparen', t)) {
 				depth -= 1
 				if (depth < 0)
 					throw new FormulaSyntaxError('Too many right parentheses')
@@ -70,13 +69,14 @@ export class FormulaTree {
 				d = depth
 			} else if (
 				d === depth &&
-				(o?.priority ?? NaN) <= (OperatorList[formula[i]]?.priority ?? Infinity)
+				(o?.priority ?? NaN) <=
+					(Operators.get(formula[i])?.priority ?? Infinity)
 			) {
 				i = k
 			}
 		}
 
-		const operator = OperatorList[formula[i]]
+		const operator = Operators.get(formula[i])
 		if (i === -1 || depth === Infinity || !(operator instanceof Operator))
 			throw new FormulaSyntaxError(`Invalid formula (got: "${formula}")`)
 
@@ -101,7 +101,7 @@ export class FormulaTree {
 				)
 				continue
 			} else {
-				const operator = OperatorList[t]
+				const operator = Operators.get(t as string)
 				if (!(operator instanceof Operator))
 					throw new FormulaSyntaxError(`Invalid operator (got: "${operator}")`)
 
@@ -157,12 +157,12 @@ export class FormulaTree {
 				const _left = this.data.left._toINString(spacer)
 				const left =
 					_left.priority < priority
-						? BracketList.lparen + _left.formula + BracketList.rparen
+						? Brackets.lparen + _left.formula + Brackets.rparen
 						: _left.formula
 				const _right = this.data.right._toINString(spacer)
 				const right =
 					_right.priority < priority
-						? BracketList.lparen + _right.formula + BracketList.rparen
+						? Brackets.lparen + _right.formula + Brackets.rparen
 						: _right.formula
 				return {
 					priority,

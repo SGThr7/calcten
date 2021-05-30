@@ -23,15 +23,17 @@ export class Operator extends FormulaSign {
 	}
 }
 
-export type OperatorList = {
-	none: Operator
-	plus: Operator
-	minus: Operator
-	times: Operator
-	div: Operator
-	[key: string]: Operator | null
-}
-export const OperatorList: OperatorList = {
+const OperatorKeys = {
+	none: ['none', '_', '＿'],
+	plus: ['plus', '+', '＋'],
+	minus: ['minus', '-', '−'],
+	times: ['times', '*', '＊', '×'],
+	div: ['div', '/', '／', '÷'],
+} as const
+type OperatorKeys = typeof OperatorKeys
+type OperatorsKey = OperatorKeys[keyof OperatorKeys][number]
+
+export const Operators = {
 	none: new Operator('＿', 100, (a) => a),
 	plus: new Operator('＋', 1, (a, b) => a + b),
 	minus: new Operator('−', 1, (a, b) => a - b),
@@ -74,40 +76,59 @@ export const OperatorList: OperatorList = {
 	get ['÷'](): Operator {
 		return this.div
 	},
-} as const
-export function* OperatorsIter(): Generator<Operator> {
-	yield OperatorList.plus
-	yield OperatorList.minus
-	yield OperatorList.times
-	yield OperatorList.div
+
+	*[Symbol.iterator](): Generator<Operator> {
+		for (const key of Object.keys(OperatorKeys) as (keyof OperatorKeys)[]) {
+			yield this[key]
+		}
+	},
+
+	get(key: string): Operator | undefined {
+		return this[key as OperatorsKey]
+	},
+
+	cmp(operator: OperatorsKey, target: string): boolean {
+		return this.get(target) === this[operator]
+	},
 }
 
 export class Bracket extends FormulaSign {}
 
-export type BracketList = {
-	lparen: Bracket
-	rparen: Bracket
-	[key: string]: Bracket | null
-}
-export const BracketList: BracketList = {
+const BracketKeys = {
+	lparen: ['lparen', '(', '（'],
+	rparen: ['rparen', ')', '）'],
+} as const
+type BracketKeys = typeof BracketKeys
+type BracketsKey = BracketKeys[keyof BracketKeys][number]
+
+export const Brackets = {
 	lparen: new Bracket('('),
 	rparen: new Bracket(')'),
 
-	get ['(']() {
+	get ['('](): Bracket {
 		return this.lparen
 	},
-	get ['（']() {
+	get ['（'](): Bracket {
 		return this.lparen
 	},
-	get [')']() {
+	get [')'](): Bracket {
 		return this.rparen
 	},
-	get ['）']() {
+	get ['）'](): Bracket {
 		return this.rparen
 	},
-} as const
 
-export function* BracketsIter(): Generator<Bracket> {
-	yield BracketList.lparen
-	yield BracketList.rparen
+	*[Symbol.iterator](): Generator<Bracket> {
+		for (const key of Object.keys(BracketKeys) as (keyof BracketKeys)[]) {
+			yield this[key]
+		}
+	},
+
+	get(key: string): Bracket | undefined {
+		return this[key as BracketsKey]
+	},
+
+	cmp(bracket: BracketsKey, target: string): boolean {
+		return this.get(target) === this[bracket]
+	},
 }

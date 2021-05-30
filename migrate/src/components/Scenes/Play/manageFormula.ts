@@ -1,6 +1,5 @@
 import { computed, ComputedRef, reactive, readonly, ref } from 'vue'
-import { BracketList, OperatorList } from '@/modules/operator'
-import { gets } from '@/modules/helper'
+import { Brackets, Operators } from '@/modules/operator'
 import { FormulaTree } from '@/modules/calculate'
 
 interface ManageFormula {
@@ -29,12 +28,7 @@ export default function manageFormula(
 		const nums = numbers.map(
 			(number) => new FormulaTree({ type: 'number', number })
 		)
-		const ops = [
-			OperatorList.plus,
-			OperatorList.minus,
-			OperatorList.times,
-			OperatorList.div,
-		]
+		const ops = [...Operators]
 		function* generateFormula(fs: FormulaTree[]): Generator<FormulaTree> {
 			if (fs.length === 1) {
 				yield fs[0]
@@ -84,47 +78,40 @@ export default function manageFormula(
 	}
 	refresh()
 
-	const allowAddOperator = (operator: string): boolean => {
-		const o = OperatorList[operator]
-		const b = BracketList[operator]
-		if (o)
+	const allowAddOperator = (token: string): boolean => {
+		if (Operators.get(token))
 			if (noperator.value < numbersCount - 1)
 				// Operator limit is `numbersCount - 1`
 				return true
 			else;
-		else if (b)
-			if (b === BracketList.lparen)
-				if (
-					Math.min(
-						numbersCount - 1 - nlparen,
-						numbersCount - 1 - noperator.value
-					) > 0
-				)
-					// Disallow waste left paren
-					return true
-				else;
-			else if (b === BracketList.rparen)
-				if (nlparen > operators.length - noperator.value - nlparen)
-					// `nlparen > nrparen`
-					return true
-				else;
+		else if (Brackets.cmp('lparen', token))
+			if (
+				Math.min(
+					numbersCount - 1 - nlparen,
+					numbersCount - 1 - noperator.value
+				) > 0
+			)
+				// Disallow waste left paren
+				return true
+			else;
+		else if (Brackets.cmp('rparen', token))
+			if (nlparen > operators.length - noperator.value - nlparen)
+				// `nlparen > nrparen`
+				return true
 			else;
 		// Unknown operator
 		else return true
 
 		return false
 	}
-	const countOperator = (operator: string, count: number): void => {
-		const o = OperatorList[operator]
-		if (o) {
+	const countOperator = (token: string, count: number): void => {
+		if (Operators.get(token)) {
 			noperator.value += count
 			return
-		}
-		const b = BracketList[operator]
-		if (b === BracketList.lparen) {
+		} else if (Brackets.cmp('lparen', token)) {
 			nlparen += count
 			return
-		} else if (b === BracketList.rparen) return
+		}
 	}
 
 	const addOperator = (operator: string) => {
@@ -148,33 +135,24 @@ export default function manageFormula(
 		let nbrace = 0
 		while (inum < numbersCount - 1) {
 			let n = numbers[inum].toString()
-			for (
-				;
-				gets(BracketList)(operators[iop]) === BracketList.lparen;
-				iop += 1
-			) {
-				n = gets(BracketList)(operators[iop]) + n
+			for (; Brackets.cmp('lparen', operators[iop]); iop += 1) {
+				n = Brackets.lparen + n
 				nbrace += 1
 			}
-			for (
-				;
-				gets(BracketList)(operators[iop]) === BracketList.rparen;
-				iop += 1
-			) {
-				n += gets(BracketList)(operators[iop])
+			for (; Brackets.cmp('rparen', operators[iop]); iop += 1) {
+				n += Brackets.rparen
 				nbrace -= 1
 			}
 			yield n
 
 			if (inum < numbersCount - 1)
-				yield gets(OperatorList)(operators[iop])?.toString() ??
-					OperatorList.none.toString()
+				yield Operators.get(operators[iop])?.toString() ??
+					Operators.none.toString()
 
 			inum += 1
 			iop += 1
 		}
-		yield numbers[inum].toString() +
-			BracketList.rparen.toString().repeat(nbrace)
+		yield numbers[inum].toString() + Brackets.rparen.toString().repeat(nbrace)
 	}
 	const formula = computed(() => [...iterFormula()])
 
