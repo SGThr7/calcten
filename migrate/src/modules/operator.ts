@@ -79,6 +79,7 @@ export const Operators = {
 
 	*[Symbol.iterator](): Generator<Operator> {
 		for (const key of Object.keys(OperatorKeys) as (keyof OperatorKeys)[]) {
+			if (key === 'none') continue
 			yield this[key]
 		}
 	},
