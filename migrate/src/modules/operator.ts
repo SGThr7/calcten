@@ -12,6 +12,12 @@ abstract class FormulaSign {
 	}
 }
 
+type FormulaMethods<T, K> = {
+	[Symbol.iterator](): Generator<T>
+	get(key: string): T | undefined
+	cmp(key: K, target: string): boolean
+}
+
 export class Operator extends FormulaSign {
 	readonly priority: number
 	readonly fn: OpFunc
@@ -33,7 +39,9 @@ const OperatorKeys = {
 type OperatorKeys = typeof OperatorKeys
 type OperatorsKey = OperatorKeys[keyof OperatorKeys][number]
 
-export const Operators = {
+export type Operators = { readonly [key in OperatorsKey]: Operator } &
+	FormulaMethods<Operator, OperatorsKey>
+export const Operators: Operators = {
 	none: new Operator('＿', 100, (a) => a),
 	plus: new Operator('＋', 1, (a, b) => a + b),
 	minus: new Operator('−', 1, (a, b) => a - b),
@@ -102,7 +110,9 @@ const BracketKeys = {
 type BracketKeys = typeof BracketKeys
 type BracketsKey = BracketKeys[keyof BracketKeys][number]
 
-export const Brackets = {
+type Brackets = { readonly [key in BracketsKey]: Bracket } &
+	FormulaMethods<Bracket, BracketsKey>
+export const Brackets: Brackets = {
 	lparen: new Bracket('('),
 	rparen: new Bracket(')'),
 
