@@ -153,19 +153,20 @@ export class FormulaTree {
 					formula: this.data.number.toString(),
 				}
 			case 'operator': {
-				const priority = this.data.operator.priority
+				const operator = this.data.operator
 				const _left = this.data.left._toINString(spacer)
 				const left =
-					_left.priority < priority
+					_left.priority < operator.priority
 						? Brackets.lparen + _left.formula + Brackets.rparen
 						: _left.formula
 				const _right = this.data.right._toINString(spacer)
 				const right =
-					_right.priority < priority
+					_right.priority < operator.priority ||
+					(!operator.isAssociative && _right.priority === operator.priority)
 						? Brackets.lparen + _right.formula + Brackets.rparen
 						: _right.formula
 				return {
-					priority,
+					priority: operator.priority,
 					formula:
 						left + spacer + this.data.operator.toString() + spacer + right,
 				}

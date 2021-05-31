@@ -1,5 +1,5 @@
 <script lang="ts">
-import { FormulaTree } from '@/modules/calculate'
+import { FormulaTree } from '@/modules/formula'
 import { computed, defineComponent, h, PropType, useCssModule } from 'vue'
 
 export default defineComponent({

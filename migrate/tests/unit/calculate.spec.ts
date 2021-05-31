@@ -1,4 +1,4 @@
-import { FormulaTree } from '@/modules/calculate'
+import { FormulaTree } from '@/modules/formula'
 import { Brackets, Operators } from '@/modules/operator'
 
 type FormulaSign = string | number

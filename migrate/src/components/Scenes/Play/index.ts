@@ -1,5 +1,5 @@
 import { computed, defineComponent, h, onBeforeUnmount, watch } from 'vue'
-import { FormulaTree } from '@/modules/calculate'
+import { FormulaTree } from '@/modules/formula'
 import Display from './Display.vue'
 import Controller from './Controller.vue'
 import manageFormula from './manageFormula'

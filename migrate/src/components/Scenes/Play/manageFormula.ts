@@ -1,6 +1,6 @@
 import { computed, ComputedRef, reactive, readonly, ref } from 'vue'
 import { Brackets, Operators } from '@/modules/operator'
-import { FormulaTree } from '@/modules/calculate'
+import { FormulaTree } from '@/modules/formula'
 
 interface ManageFormula {
 	numbers: readonly number[]
