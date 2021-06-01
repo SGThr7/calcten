@@ -89,13 +89,18 @@ export default function manageFormula(
 				Math.min(
 					numbersCount - 1 - nlparen,
 					numbersCount - 1 - noperator.value
-				) > 0
+				) > 0 &&
+				!Brackets.cmp('rparen', operators[operators.length - 1])
 			)
 				// Disallow waste left paren
 				return true
 			else;
 		else if (Brackets.cmp('rparen', token))
-			if (nlparen > operators.length - noperator.value - nlparen)
+			if (
+				nlparen > operators.length - noperator.value - nlparen &&
+				noperator.value < numbersCount - 1 &&
+				!Brackets.cmp('lparen', operators[operators.length - 1])
+			)
 				// `nlparen > nrparen`
 				return true
 			else;
