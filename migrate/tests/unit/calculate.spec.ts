@@ -2,7 +2,7 @@ import { FormulaTree } from '@/modules/formula'
 import { Brackets, Operators } from '@/modules/operator'
 
 type FormulaSign = string | number
-type Formula = (FormulaSign | FormulaSign[])[]
+type Formula = (FormulaSign | Formula)[]
 function joinFormula(formula: Formula, separator = ''): string {
 	return formula.reduce<string>((res, token, i) => {
 		if (i !== 0) res += separator
@@ -47,6 +47,11 @@ describe('caluclate.ts', () => {
 		it.each([
 			['(1 + 2) *  4 - 3 ', [[1, '+', 2], '*', 4, '-', 3]],
 			['2 - (1 - 4) - 3', [2, '-', [1, '-', 4], '-', 3]],
+			['1 + 2 - 3 - 4', [1, '+', 2, '-', 3, '-', 4]],
+			['1 + (2 - 3) - 4', [1, '+', 2, '-', 3, '-', 4]],
+			['1 - (2 - 3 - 4)', [1, '-', [2, '-', 3, '-', 4]]],
+			['1 - (2 - (3 - 4))', [1, '-', [2, '-', [3, '-', 4]]]],
+			['(1 + 2) - 3 - 4', [1, '+', 2, '-', 3, '-', 4]],
 		])('convert to IN "%s"', (fstr, ansar) => {
 			const f = FormulaTree.fromIN(fstr)
 			const spacer = ','
