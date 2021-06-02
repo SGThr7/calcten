@@ -20,7 +20,8 @@ export default function manageFormula(
 	const numbers = reactive<number[]>([])
 	const operators = reactive<string[]>([])
 	const noperator = ref(0)
-	let nlparen = 0
+	const nlparen = Array<number>(numbersCount - 1).fill(0)
+	const nrparen = reactive(Array<number>(numbersCount - 1).fill(0))
 
 	const solve = (numbers: number[], answer: number) => {
 		if (numbers.length < 2)
@@ -74,11 +75,14 @@ export default function manageFormula(
 		console.log(ans.map((f) => f.toINString()))
 		operators.length = 0
 		noperator.value = 0
-		nlparen = 0
+		nlparen.fill(0)
+		nrparen.fill(0)
 	}
 	refresh()
 
 	const allowAddOperator = (token: string): boolean => {
+		const nlpsum = nlparen.reduce((p, v) => p + v, 0)
+		const nrpsum = nrparen.reduce((p, v) => p + v, 0)
 		if (Operators.get(token))
 			if (noperator.value < numbersCount - 1)
 				// Operator limit is `numbersCount - 1`
@@ -86,10 +90,8 @@ export default function manageFormula(
 			else;
 		else if (Brackets.cmp('lparen', token))
 			if (
-				Math.min(
-					numbersCount - 1 - nlparen,
-					numbersCount - 1 - noperator.value
-				) > 0 &&
+				numbersCount - 1 > nlpsum &&
+				numbersCount - 1 - noperator.value > nlparen[noperator.value] &&
 				!Brackets.cmp('rparen', operators[operators.length - 1])
 			)
 				// Disallow waste left paren
@@ -97,7 +99,9 @@ export default function manageFormula(
 			else;
 		else if (Brackets.cmp('rparen', token))
 			if (
-				nlparen > operators.length - noperator.value - nlparen &&
+				nlpsum > nrpsum &&
+				nlparen.reduce((p, v) => p + Number(v >= 1), 0) >
+					nrparen[noperator.value] &&
 				noperator.value < numbersCount - 1 &&
 				!Brackets.cmp('lparen', operators[operators.length - 1])
 			)
@@ -112,10 +116,10 @@ export default function manageFormula(
 	const countOperator = (token: string, count: number): void => {
 		if (Operators.get(token)) {
 			noperator.value += count
-			return
 		} else if (Brackets.cmp('lparen', token)) {
-			nlparen += count
-			return
+			nlparen[noperator.value] += count
+		} else if (Brackets.cmp('rparen', token)) {
+			nrparen[noperator.value] += count
 		}
 	}
 
