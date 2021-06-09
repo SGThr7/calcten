@@ -1,7 +1,8 @@
 <script lang="ts">
 import { h, VNodeArrayChildren, defineComponent } from 'vue'
 import { Brackets, Operators } from '@/modules/operator'
-import Key from '@/components/UI/Buttons/Key.vue'
+import { keyBind } from '@/modules/keyBind'
+import KeyButton from '@/components/UI/Buttons/Key.vue'
 
 export default defineComponent({
 	name: 'Controller',
@@ -24,21 +25,23 @@ export default defineComponent({
 		for (const bracket of Brackets)
 			children.push(
 				h(
-					Key,
+					KeyButton,
 					{
 						onClick: () => this.addOperator(bracket.toString()),
 						disabled: !this.allowAddOperator(bracket.toString()),
+						bindKey: keyBind.list[bracket.toString()],
 					},
 					() => bracket.toString()
 				)
 			)
 		children.push(
 			h(
-				Key,
+				KeyButton,
 				{
 					onClick: () => this.removeOperator(),
 					class: 'remove-key',
 					disabled: !this.allowAddOperator(),
+					bindKey: keyBind.list.remove,
 				},
 				() => '←'
 			)
@@ -46,10 +49,11 @@ export default defineComponent({
 		for (const operator of Operators)
 			children.push(
 				h(
-					Key,
+					KeyButton,
 					{
 						onClick: () => this.addOperator(operator.toString()),
 						disabled: !this.allowAddOperator(operator.toString()),
+						bindKey: keyBind.list[operator.toString()],
 					},
 					() => operator.toString()
 				)
