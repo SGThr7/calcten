@@ -30,7 +30,10 @@ export default defineComponent({
 						)
 					)
 				),
-				h('div', { class: style.result }, ['=', result.value]),
+				h('div', { class: style.result }, [
+					'=',
+					Math.round(result.value * 100) / 100,
+				]),
 			])
 	},
 })
