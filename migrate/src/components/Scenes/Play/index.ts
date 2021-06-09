@@ -3,7 +3,7 @@ import { FormulaTree } from '@/modules/formula'
 import Display from './Display.vue'
 import Controller from './Controller.vue'
 import manageFormula from './manageFormula'
-import './play.sass'
+import style from './play.module.sass'
 
 export default defineComponent({
 	name: 'Play',
@@ -42,7 +42,7 @@ export default defineComponent({
 		})
 
 		return () =>
-			h('div', { class: 'play' }, [
+			h('div', { class: style.play }, [
 				h(Display, {
 					formula: formula.value,
 				}),
