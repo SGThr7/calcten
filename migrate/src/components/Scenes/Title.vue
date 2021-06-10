@@ -2,15 +2,15 @@
 	<div :class="$style.title">
 		<div :class="$style.title_text">calc10</div>
 		<div :class="$style.menu">
-			<menu-button @click="play">Play</menu-button>
+			<menu-button @click="play" :bindKey="playKey">Play</menu-button>
 		</div>
 	</div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-
 import { useStore } from '@/store'
+import { Key } from '@/modules/keyBind'
 import MenuButton from '@/components/UI/Buttons/Menu.vue'
 
 export default defineComponent({
@@ -21,9 +21,11 @@ export default defineComponent({
 		const play = () => {
 			store.commit('setScene', { scene: 'Play' })
 		}
+		const playKey = new Key('KeyP')
 
 		return {
 			play,
+			playKey,
 		}
 	},
 })

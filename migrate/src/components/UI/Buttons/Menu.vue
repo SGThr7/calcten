@@ -1,14 +1,16 @@
 <template>
-	<button :class="$style.menu_button" v-bind="$attrs" tabindex="0">
+	<base-button :class="$style.menu_button" v-bind="$attrs" tabindex="0">
 		<slot></slot>
-	</button>
+	</base-button>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue'
+import BaseButton from './Base.vue'
 
 export default defineComponent({
 	name: 'MenuButton',
+	components: { BaseButton },
 })
 </script>
 
