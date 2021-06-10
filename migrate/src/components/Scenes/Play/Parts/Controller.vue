@@ -1,5 +1,5 @@
 <script lang="ts">
-import { h, VNodeArrayChildren, defineComponent } from 'vue'
+import { h, VNodeArrayChildren, defineComponent, useCssModule } from 'vue'
 import { Brackets, Operators } from '@/modules/operator'
 import { keyBind } from '@/modules/keyBind'
 import KeyButton from '@/components/UI/Buttons/Key.vue'
@@ -21,6 +21,7 @@ export default defineComponent({
 		},
 	},
 	render() {
+		const style = useCssModule()
 		const children: VNodeArrayChildren = []
 		for (const bracket of Brackets)
 			children.push(
@@ -39,7 +40,7 @@ export default defineComponent({
 				KeyButton,
 				{
 					onClick: () => this.removeOperator(),
-					class: 'remove-key',
+					class: style.remove_key,
 					disabled: !this.allowAddOperator(),
 					bindKey: keyBind.list.remove,
 				},
@@ -58,12 +59,12 @@ export default defineComponent({
 					() => operator.toString()
 				)
 			)
-		return h('div', { class: 'controller' }, children)
+		return h('div', { class: style.controller }, children)
 	},
 })
 </script>
 
-<style lang="sass" scoped>
+<style lang="sass" module>
 $col-count: 4
 
 .controller
@@ -73,7 +74,7 @@ $col-count: 4
 	grid-template-columns: repeat($col-count, 1fr)
 	gap: 10px
 
-	.remove-key
+	.remove_key
 		grid-column: $col-count
 
 // square grid

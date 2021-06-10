@@ -1,5 +1,5 @@
 <template>
-	<button class="menu-button" v-bind="$attrs" tabindex="0">
+	<button :class="$style.menu_button" v-bind="$attrs" tabindex="0">
 		<slot></slot>
 	</button>
 </template>
@@ -12,8 +12,8 @@ export default defineComponent({
 })
 </script>
 
-<style lang="sass" scoped>
-.menu-button
+<style lang="sass" module>
+.menu_button
 	cursor: pointer
 	font-family: 'Kanit', sans-serif
 	border-radius: 15px

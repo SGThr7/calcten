@@ -1,5 +1,5 @@
 <template>
-	<div class="game">
+	<div :class="$style.game">
 		<component :is="scene"></component>
 	</div>
 </template>
@@ -45,7 +45,9 @@ html
 	display: flex
 	justify-content: center
 	align-items: center
+</style>
 
+<style lang="sass" module>
 .game
 	height: 100%
 	width: 100%
