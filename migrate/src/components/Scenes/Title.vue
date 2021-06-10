@@ -1,7 +1,7 @@
 <template>
-	<div class="title">
-		<div class="title-text">calc10</div>
-		<div class="menu">
+	<div :class="$style.title">
+		<div :class="$style.title_text">calc10</div>
+		<div :class="$style.menu">
 			<menu-button @click="play">Play</menu-button>
 		</div>
 	</div>
@@ -29,14 +29,20 @@ export default defineComponent({
 })
 </script>
 
-<style lang="sass" scoped>
+<style lang="sass" module>
 .title
 	height: 100%
 	display: grid
 	grid-template-rows: 1fr 3fr
 	align-items: center
 
-	.title-text
+	.title_text
 		font-family: 'Balsamiq Sans'
 		font-size: 5em
+
+.menu > button
+	font-size: 2em
+	width: 100%
+	max-width: 180px
+	height: 60px
 </style>

@@ -16,10 +16,6 @@ export default defineComponent({
 .menu-button
 	cursor: pointer
 	font-family: 'Kanit', sans-serif
-	font-size: 2em
-	width: 100%
-	max-width: 180px
-	height: 60px
 	border-radius: 15px
 
 	$button-color: lightgray

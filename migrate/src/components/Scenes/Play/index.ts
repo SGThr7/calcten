@@ -1,7 +1,8 @@
 import { computed, defineComponent, h, onBeforeUnmount, watch } from 'vue'
 import { FormulaTree } from '@/modules/formula'
-import Display from './Display.vue'
-import Controller from './Controller.vue'
+import StatusBar from './Parts/StatusBar.vue'
+import Display from './Parts/Display.vue'
+import Controller from './Parts/Controller.vue'
 import manageFormula from './manageFormula'
 import style from './play.module.sass'
 
@@ -43,6 +44,7 @@ export default defineComponent({
 
 		return () =>
 			h('div', { class: style.play }, [
+				h(StatusBar),
 				h(Display, {
 					formula: formula.value,
 				}),
