@@ -25,15 +25,17 @@ export default defineComponent({
 <style lang="sass" module>
 .button
 	position: relative
+	font-family: 'New Tegomin', serif
+	font-size: 2rem
 
 	&:disabled > .bind
 		color: rgba(128, 128, 128, 0.3)
 
 .bind
 	position: absolute
-	$pad: 3px
-	right: $pad
-	top: $pad
+	top: 0
+	right: 3px
 	color: #808080
-	font-size: 0.8em
+	font-family: sans-serif
+	font-size: 0.7rem
 </style>
