@@ -58,4 +58,7 @@ html
 
 	font-size: min(1rem, 4vw)
 	text-align: center
+
+	& > *
+		height: 100%
 </style>

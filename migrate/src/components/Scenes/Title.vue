@@ -31,7 +31,6 @@ export default defineComponent({
 
 <style lang="sass" module>
 .title
-	height: 100%
 	display: grid
 	grid-template-rows: 1fr 3fr
 	align-items: center
