@@ -3,12 +3,13 @@ module.exports = {
 	env: {
 		node: true,
 	},
+	plugins: ['prettier'],
 	extends: [
 		'plugin:vue/vue3-essential',
 		'eslint:recommended',
 		'@vue/typescript/recommended',
-		'@vue/prettier',
-		'@vue/prettier/@typescript-eslint',
+		'prettier',
+		'prettier/@typescript-eslint',
 	],
 	parserOptions: {
 		ecmaVersion: 2020,
@@ -20,6 +21,7 @@ module.exports = {
 				singleQuote: true,
 				semi: false,
 				useTabs: true,
+				trailingComma: 'es5',
 			},
 		],
 		'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
