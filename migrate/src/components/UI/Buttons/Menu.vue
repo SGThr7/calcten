@@ -19,6 +19,7 @@ export default defineComponent({
 	cursor: pointer
 	font-family: 'Kanit', sans-serif
 	border-radius: 15px
+	padding: 0 1.5ex
 
 	$button-color: lightgray
 	border: 6px solid $button-color
