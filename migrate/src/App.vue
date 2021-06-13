@@ -2,17 +2,21 @@
 	<div :class="$style.game">
 		<component :is="scene"></component>
 	</div>
+	<debug-tools></debug-tools>
 </template>
 
 <script lang="ts">
 import { computed, defineComponent } from 'vue'
-
 import { useStore } from '@/store'
 import { components } from '@/components/Scenes'
+import DebugTools from '@/components/DebugTools'
 
 export default defineComponent({
 	name: 'App',
-	components,
+	components: {
+		DebugTools,
+		...components,
+	},
 	setup() {
 		const store = useStore()
 
@@ -45,6 +49,7 @@ html
 	display: flex
 	justify-content: center
 	align-items: center
+	flex-direction: column
 </style>
 
 <style lang="sass" module>
