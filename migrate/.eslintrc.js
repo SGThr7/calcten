@@ -26,7 +26,6 @@ module.exports = {
 		],
 		'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
 		'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
-		'no-tabs': ['error', { allowIndentationTabs: true }],
 		'quote-props': ['error', 'as-needed'],
 		semi: ['error', 'never'],
 	},
