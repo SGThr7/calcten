@@ -5,10 +5,13 @@ import Display from './Parts/Display.vue'
 import Controller from './Parts/Controller.vue'
 import manageFormula from './manageFormula'
 import style from './play.module.sass'
+import { useStore } from '@/store'
 
 export default defineComponent({
 	name: 'Play',
 	setup() {
+		const store = useStore()
+
 		const {
 			formula,
 			refresh,
@@ -17,9 +20,12 @@ export default defineComponent({
 			allowAddOperator: _allowAddOperator,
 			isInputFinish,
 		} = manageFormula(4, 10)
-		const result = computed(() =>
-			FormulaTree.fromIN(formula.value.join('')).calculate()
+
+		const formulaTree = computed(() =>
+			FormulaTree.fromIN(formula.value.join(''))
 		)
+		store.commit('pushFormula', { formula: formulaTree.value })
+		const result = computed(() => formulaTree.value.calculate())
 		const correctResult = computed<boolean>(
 			() => isInputFinish.value && result.value === 10
 		)
@@ -32,7 +38,10 @@ export default defineComponent({
 			if (isCorrect) {
 				if (timer === null)
 					timer = setTimeout(() => {
+						store.commit('popFormula')
+						store.commit('pushFormula', { formula: formulaTree.value })
 						refresh()
+						store.commit('pushFormula', { formula: formulaTree.value })
 						timer = null
 					}, 1000)
 			}

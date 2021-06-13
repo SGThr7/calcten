@@ -1,6 +1,6 @@
 <template>
 	<div :class="$style.status_bar">
-		<menu-button :class="$style.exit" @click="exit">Exit</menu-button>
+		<menu-button :class="$style.exit" @click="exit">Result</menu-button>
 	</div>
 </template>
 
@@ -15,7 +15,7 @@ export default defineComponent({
 	setup() {
 		const store = useStore()
 		const exit = () => {
-			store.commit('setScene', { scene: 'Title' })
+			store.commit('setScene', { scene: 'Result' })
 		}
 
 		return {
@@ -32,9 +32,9 @@ export default defineComponent({
 	justify-content: space-between
 
 .exit
-	height: 25px
-	width: 50px
-	padding: 0
+	// height: 25px
+	// width: 50px
+	// padding: 0
 	border-width: 3px !important
 	border-radius: 7px !important
 </style>

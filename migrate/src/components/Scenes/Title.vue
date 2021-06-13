@@ -22,6 +22,7 @@ export default defineComponent({
 		const store = useStore()
 		const play = () => {
 			store.commit('setScene', { scene: 'Play' })
+			store.commit('clearFormulas', {})
 		}
 		const playKey = new Key('KeyP')
 
