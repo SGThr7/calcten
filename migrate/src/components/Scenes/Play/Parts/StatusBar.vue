@@ -1,7 +1,6 @@
 <template>
 	<div :class="$style.status_bar">
 		<menu-button :class="$style.exit" @click="exit">Exit</menu-button>
-		<div>timer</div>
 	</div>
 </template>
 
