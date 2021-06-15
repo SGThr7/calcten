@@ -1,55 +1,159 @@
-export const Operator = {
-	plus: '＋',
-	minus: '−',
-	times: '×',
-	div: '÷',
-} as const
-export type Operator = typeof Operator[keyof typeof Operator]
+type OpFunc = (a: number, b: number) => number
 
-export const InputSign = {
-	none: '＿',
-	...Operator,
-} as const
-export type InputSign = typeof InputSign[keyof typeof InputSign]
+abstract class FormulaSign {
+	readonly text: string
 
-export const Bracket = {
-	lparen: '(',
-	rparen: ')',
-} as const
-export type Bracket = typeof Bracket[keyof typeof Bracket]
+	constructor(text: string) {
+		this.text = text
+	}
 
-export type FormulaSign = InputSign | Bracket
-
-export type OpFunc = (a: number, b: number) => number
-
-export type OpData = Record<InputSign, { priority: number; fn: OpFunc }>
-export const OpData: OpData = {
-	[InputSign.none]: {
-		priority: 100,
-		fn: (a, b) => a,
-	},
-	[Operator.plus]: {
-		priority: 1,
-		fn: (a, b) => a + b,
-	},
-	[Operator.minus]: {
-		priority: 1,
-		fn: (a, b) => a - b,
-	},
-	[Operator.times]: {
-		priority: 2,
-		fn: (a, b) => a * b,
-	},
-	[Operator.div]: {
-		priority: 2,
-		fn: (a, b) => a / b,
-	},
-} as const
-
-export function isOperator(arg: unknown): arg is Operator {
-	return Object.values<unknown>(Operator).includes(arg)
+	toString(): string {
+		return this.text
+	}
 }
 
-export function isInputSign(arg: unknown): arg is InputSign {
-	return Object.values<unknown>(InputSign).includes(arg)
+type FormulaMethods<T, K> = {
+	[Symbol.iterator](): Generator<T>
+	get(key: string): T | undefined
+	cmp(key: K, target: string): boolean
+}
+
+export class Operator extends FormulaSign {
+	readonly priority: number
+	readonly fn: OpFunc
+	readonly isAssociative: boolean
+	readonly symbol: string
+
+	constructor(
+		text: string,
+		priority: number,
+		fn: OpFunc,
+		isAssociative: boolean,
+		symbol?: string
+	) {
+		super(text)
+		this.priority = priority
+		this.fn = fn
+		this.isAssociative = isAssociative
+		this.symbol = symbol ?? text
+	}
+
+	toSymbol(): string {
+		return this.symbol
+	}
+}
+
+const OperatorKeys = {
+	none: ['none', '_', '＿'],
+	plus: ['plus', '+', '＋'],
+	minus: ['minus', '-', '−'],
+	times: ['times', '*', '＊', '×'],
+	div: ['div', '/', '／', '÷'],
+} as const
+type OperatorKeys = typeof OperatorKeys
+type OperatorsKey = OperatorKeys[keyof OperatorKeys][number]
+
+export type Operators = { readonly [key in OperatorsKey]: Operator } &
+	FormulaMethods<Operator, OperatorsKey>
+export const Operators: Operators = {
+	none: new Operator('_', 100, (a) => a, true, '＿'),
+	plus: new Operator('+', 1, (a, b) => a + b, true, '＋'),
+	minus: new Operator('-', 1, (a, b) => a - b, false, '−'),
+	times: new Operator('×', 2, (a, b) => a * b, true),
+	div: new Operator('÷', 2, (a, b) => a / b, false),
+
+	get ['_'](): Operator {
+		return this.none
+	},
+	get ['＿'](): Operator {
+		return this.none
+	},
+	get ['+'](): Operator {
+		return this.plus
+	},
+	get ['＋'](): Operator {
+		return this.plus
+	},
+	get ['-'](): Operator {
+		return this.minus
+	},
+	get ['−'](): Operator {
+		return this.minus
+	},
+	get ['*'](): Operator {
+		return this.times
+	},
+	get ['＊'](): Operator {
+		return this.times
+	},
+	get ['×'](): Operator {
+		return this.times
+	},
+	get ['/'](): Operator {
+		return this.div
+	},
+	get ['／'](): Operator {
+		return this.div
+	},
+	get ['÷'](): Operator {
+		return this.div
+	},
+
+	*[Symbol.iterator](): Generator<Operator> {
+		for (const key of Object.keys(OperatorKeys) as (keyof OperatorKeys)[]) {
+			if (key === 'none') continue
+			yield this[key]
+		}
+	},
+
+	get(key: string): Operator | undefined {
+		return this[key as OperatorsKey]
+	},
+
+	cmp(operator: OperatorsKey, target: string): boolean {
+		return this.get(target) === this[operator]
+	},
+}
+
+export class Bracket extends FormulaSign {}
+
+const BracketKeys = {
+	lparen: ['lparen', '(', '（'],
+	rparen: ['rparen', ')', '）'],
+} as const
+type BracketKeys = typeof BracketKeys
+type BracketsKey = BracketKeys[keyof BracketKeys][number]
+
+type Brackets = { readonly [key in BracketsKey]: Bracket } &
+	FormulaMethods<Bracket, BracketsKey>
+export const Brackets: Brackets = {
+	lparen: new Bracket('('),
+	rparen: new Bracket(')'),
+
+	get ['('](): Bracket {
+		return this.lparen
+	},
+	get ['（'](): Bracket {
+		return this.lparen
+	},
+	get [')'](): Bracket {
+		return this.rparen
+	},
+	get ['）'](): Bracket {
+		return this.rparen
+	},
+
+	*[Symbol.iterator](): Generator<Bracket> {
+		for (const key of Object.keys(BracketKeys) as (keyof BracketKeys)[]) {
+			yield this[key]
+		}
+	},
+
+	get(key: string): Bracket | undefined {
+		return this[key as BracketsKey]
+	},
+
+	cmp(bracket: BracketsKey, target: string): boolean {
+		return this.get(target) === this[bracket]
+	},
 }
