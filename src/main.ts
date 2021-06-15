@@ -1,10 +1,5 @@
-import Vue from 'vue'
-import App from '@/App.vue'
-import store from '@/store'
+import { createApp } from 'vue'
+import App from './App.vue'
+import { store, key } from './store'
 
-new Vue({
-	el: '#game',
-	components: { App },
-	template: '<app />',
-	store,
-})
+createApp(App).use(store, key).mount('#app')
