@@ -56,7 +56,7 @@ export default defineComponent({
 						disabled: !this.allowAddOperator(operator.toString()),
 						bindKey: keyBind.list[operator.toString()],
 					},
-					() => operator.toString()
+					() => operator.toSymbol()
 				)
 			)
 		return h('div', { class: style.controller }, children)

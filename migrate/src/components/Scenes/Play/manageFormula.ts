@@ -155,8 +155,8 @@ export default function manageFormula(
 			yield n
 
 			if (inum < numbersCount - 1)
-				yield Operators.get(operators[iop])?.toString() ??
-					Operators.none.toString()
+				yield Operators.get(operators[iop])?.toSymbol() ??
+					Operators.none.toSymbol()
 
 			inum += 1
 			iop += 1

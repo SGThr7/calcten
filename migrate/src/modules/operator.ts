@@ -22,17 +22,24 @@ export class Operator extends FormulaSign {
 	readonly priority: number
 	readonly fn: OpFunc
 	readonly isAssociative: boolean
+	readonly symbol: string
 
 	constructor(
 		text: string,
 		priority: number,
 		fn: OpFunc,
-		isAssociative: boolean
+		isAssociative: boolean,
+		symbol?: string
 	) {
 		super(text)
 		this.priority = priority
 		this.fn = fn
 		this.isAssociative = isAssociative
+		this.symbol = symbol ?? text
+	}
+
+	toSymbol(): string {
+		return this.symbol
 	}
 }
 
@@ -49,9 +56,9 @@ type OperatorsKey = OperatorKeys[keyof OperatorKeys][number]
 export type Operators = { readonly [key in OperatorsKey]: Operator } &
 	FormulaMethods<Operator, OperatorsKey>
 export const Operators: Operators = {
-	none: new Operator('＿', 100, (a) => a, true),
-	plus: new Operator('＋', 1, (a, b) => a + b, true),
-	minus: new Operator('−', 1, (a, b) => a - b, false),
+	none: new Operator('_', 100, (a) => a, true, '＿'),
+	plus: new Operator('+', 1, (a, b) => a + b, true, '＋'),
+	minus: new Operator('-', 1, (a, b) => a - b, false, '−'),
 	times: new Operator('×', 2, (a, b) => a * b, true),
 	div: new Operator('÷', 2, (a, b) => a / b, false),
 
