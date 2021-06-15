@@ -1,69 +1,69 @@
 <template>
-	<div :class="$style.game">
-		<component :is="scene"></component>
+	<div class="game-area">
+		<component :is="currentScene"></component>
 	</div>
-	<debug-tools></debug-tools>
 </template>
 
 <script lang="ts">
-import { computed, defineComponent } from 'vue'
-import { useStore } from '@/store'
-import { components } from '@/components/Scenes'
-import DebugTools from '@/components/DebugTools'
+import Vue from 'vue'
+import { mapGetters } from 'vuex'
+import Title from '@/components/TitleScene/TitleView.vue'
+import Play from '@/components/PlayScene/PlayView.vue'
+import Result from '@/components/ResultScene/ResultView.vue'
 
-export default defineComponent({
-	name: 'App',
-	components: {
-		DebugTools,
-		...components,
+import { render } from '@/modules/icon'
+
+const components = { Title, Play, Result }
+type Components = typeof components
+
+export default Vue.extend({
+	components,
+	computed: {
+		...mapGetters('scene', ['currentSceneKey']),
+		currentScene(): Components[keyof Components] {
+			return components[this.currentSceneKey as keyof Components]
+		},
 	},
-	setup() {
-		const store = useStore()
-
-		const scene = computed(() => store.getters.scene)
-
-		return {
-			scene,
-		}
+	mounted() {
+		render()
 	},
 })
 </script>
 
 <style lang="sass">
-// font-family: 'Balsamiq Sans', cursive
-// font-family: 'Kanit', sans-serif
+// text memo: 0123456789(＋−×÷=)
 // font-family: 'New Tegomin', serif
+@import url('https://fonts.googleapis.com/css2?family=New+Tegomin&display=swap')
+// font-family: 'Balsamiq Sans', cursive
+@import url('https://fonts.googleapis.com/css2?family=Balsamiq+Sans&display=swap&text=calc10')
+// font-family: 'Kanit', sans-serif
+@import url('https://fonts.googleapis.com/css2?family=Kanit:wght@600&display=swap&text=PlayResultExit3210')
 
-html, body, #app
+html, body
 	height: 100%
 	width: 100%
 	margin: 0
 
-html
 	user-select: none
 	-webkit-user-select: none
 	-moz-user-select: none
 	-ms-user-select: none
 
-#app
-	display: flex
-	justify-content: center
-	align-items: center
-	flex-direction: column
-</style>
+body
+	display: grid
+	place-items: center
 
-<style lang="sass" module>
-.game
+.game-area
 	height: 100%
 	width: 100%
 	max-height: 500px
 	max-width: 400px
 	padding: 10px
-	border: 1px solid
+	box-sizing: border-box
+	position: relative
 
 	font-size: min(1rem, 4vw)
 	text-align: center
 
-	& > *
-		height: 100%
+	border: 1px solid
 </style>
