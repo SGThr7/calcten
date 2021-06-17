@@ -1,14 +1,15 @@
-name: Auto Deploy GitHub Pages
+name: Lint
 
 on:
-  push:
-    branches: [ main ]
+  pull_request:
+    branches: [ develop ]
 
   workflow_dispatch:
 
 jobs:
   build:
     runs-on: ubuntu-latest
+
     steps:
       - uses: actions/checkout@v2
 
@@ -16,15 +17,14 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version: '16.x'
-          
+
       - name: Install dependecies
         run: npm ci
-        
-      - name: Build
-        run: npm run build
-        
-      - name: Deploy
-        uses: peaceiris/actions-gh-pages@v3
+
+      - name: Run linters
+        uses: wearerequired/lint-action@v1
+        env:
+          NODE_ENV: production
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./dist
+          eslint: true
+          eslint_extensions: js,ts,vue
