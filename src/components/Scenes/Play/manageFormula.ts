@@ -67,12 +67,7 @@ export default function manageFormula(
 			}
 			return numbers
 		}
-		let ans
-		for (;;) {
-			ans = solve(randomize(), answer)
-			if (ans.length) break
-		}
-		console.log(ans.map((f) => f.toINString()))
+		while (!solve(randomize(), answer).length);
 		operators.length = 0
 		noperator.value = 0
 		nlparen.fill(0)
