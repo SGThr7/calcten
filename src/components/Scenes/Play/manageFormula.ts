@@ -13,6 +13,21 @@ interface ManageFormula {
 	isInputFinish: ComputedRef<boolean>
 }
 
+declare global {
+	interface Window {
+		ans: string[] | undefined
+		rawans: FormulaTree[] | undefined
+	}
+}
+
+Object.defineProperties(window, {
+	ans: {
+		get() {
+			return window.rawans?.map((f) => f.toINString())
+		},
+	},
+})
+
 export default function manageFormula(
 	numbersCount: number,
 	answer: number
@@ -57,6 +72,7 @@ export default function manageFormula(
 		for (const g of generateFormula(nums)) {
 			if (g.calculate() === answer) res[g.toINString()] = g
 		}
+		window.rawans = Object.values(res)
 		return Object.values(res)
 	}
 
@@ -67,12 +83,7 @@ export default function manageFormula(
 			}
 			return numbers
 		}
-		let ans
-		for (;;) {
-			ans = solve(randomize(), answer)
-			if (ans.length) break
-		}
-		console.log(ans.map((f) => f.toINString()))
+		while (!solve(randomize(), answer).length);
 		operators.length = 0
 		noperator.value = 0
 		nlparen.fill(0)
