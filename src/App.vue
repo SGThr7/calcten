@@ -1,4 +1,5 @@
 <template>
+	<preload-font :textList="textList"></preload-font>
 	<div :class="$style.game">
 		<component :is="scene"></component>
 	</div>
@@ -10,11 +11,13 @@ import { computed, defineComponent } from 'vue'
 import { useStore } from '@/store'
 import { components } from '@/components/Scenes'
 import DebugTools from '@/components/DebugTools'
+import PreloadFont, { TextList } from '@/components/PreloadFont'
 
 export default defineComponent({
 	name: 'App',
 	components: {
 		DebugTools,
+		PreloadFont,
 		...components,
 	},
 	setup() {
@@ -22,8 +25,24 @@ export default defineComponent({
 
 		const scene = computed(() => store.getters.scene)
 
+		const textList: TextList = [
+			{
+				font: 'New Tegomin',
+				text: '0123456789_＿+＋-−×÷()=',
+			},
+			{
+				font: 'Balsamiq Sans',
+				text: 'calc10',
+			},
+			{
+				font: 'Kanit',
+				text: 'Play Finish Exit Result GotFormulas',
+			},
+		]
+
 		return {
 			scene,
+			textList,
 		}
 	},
 })
