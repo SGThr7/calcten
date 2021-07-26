@@ -79,6 +79,7 @@ html
 	max-width: 400px
 	padding: 10px
 	border: 1px solid
+	box-sizing: border-box
 
 	font-size: min(1rem, 4vw)
 	text-align: center
