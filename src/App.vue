@@ -63,6 +63,7 @@ html
 	-webkit-user-select: none
 	-moz-user-select: none
 	-ms-user-select: none
+	touch-action: none
 
 #app
 	display: flex
