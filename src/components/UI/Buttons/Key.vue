@@ -32,13 +32,13 @@ export default defineComponent({
 	border: 1px solid
 	border-radius: 3px
 
-	background-color: white
+	background-color: transparent
 
 	&:disabled
-		background-color: rgba(64, 64, 64, 0.2)
+		background-color: rgba(60, 60, 60, 0.2)
 
 	&:disabled > .bind
-		color: rgba(128, 128, 128, 0.3)
+		opacity: 0.247
 
 .bind
 	position: absolute
