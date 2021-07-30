@@ -1,29 +1,33 @@
-# migrate
+# calc10
 
-## Project setup
-```
-npm install
-```
+[Play game](https://sgthr7.github.io/calcten/)
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
+[English](#english)
 
-### Compiles and minifies for production
-```
-npm run build
-```
+## このゲームについて
 
-### Run your unit tests
-```
-npm run test:unit
-```
+calc10は”きっぷパズル”といった名前でも知られているゲームです。
+与えられた4つの数字と四則演算を使って10を作ってください。
+また、計算可能な問題しか出ないようになっています。
 
-### Lints and fixes files
-```
-npm run lint
-```
+プレイ: [https://sgthr7.github.io/calcten/](https://sgthr7.github.io/calcten/)
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+### 例
+
+[2, 2, 6, 3]が与えられた場合、`2 ÷ 2 + 6 + 3`とすることで10を作ることができます。
+
+---
+
+# English
+
+## About
+
+This game known as make10.
+You're given 4 numbers and make 10 with them and four arithmetic operators.
+You can absolutely make 10.
+
+Play: [https://sgthr7.github.io/calcten/](https://sgthr7.github.io/calcten/)
+
+### Example
+
+If you're given [2, 2, 6, 3], you can make 10 for `2 ÷ 2 + 6 + 3`.

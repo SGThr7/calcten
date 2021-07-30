@@ -2,8 +2,8 @@
 	<div :class="$style.title">
 		<div :class="$style.title_text">calc10</div>
 		<div :class="$style.menu">
-			<menu-button @click="play" :bindKey="playKey">
-				<span :class="$style.underline">P</span>lay
+			<menu-button class="underline" @click="play" :bindKey="playKey">
+				Play
 			</menu-button>
 		</div>
 	</div>
@@ -49,7 +49,4 @@ export default defineComponent({
 	width: 100%
 	max-width: 180px
 	height: 60px
-
-.underline
-	text-decoration: underline
 </style>

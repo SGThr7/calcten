@@ -28,6 +28,15 @@ export default defineComponent({
 	font-family: 'New Tegomin', serif
 	font-size: 2rem
 
+	padding: 1px
+	border: 1px solid
+	border-radius: 3px
+
+	background-color: white
+
+	&:disabled
+		background-color: rgba(64, 64, 64, 0.2)
+
 	&:disabled > .bind
 		color: rgba(128, 128, 128, 0.3)
 

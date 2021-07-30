@@ -29,3 +29,8 @@ export default defineComponent({
 	&:hover
 		background-color: transparent
 </style>
+
+<style lang="sass" scoped>
+.underline::first-letter
+	text-decoration: underline
+</style>
