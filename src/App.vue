@@ -63,6 +63,7 @@ html
 	-webkit-user-select: none
 	-moz-user-select: none
 	-ms-user-select: none
+	touch-action: none
 
 #app
 	display: flex
@@ -79,6 +80,7 @@ html
 	max-width: 400px
 	padding: 10px
 	border: 1px solid
+	box-sizing: border-box
 
 	font-size: min(1rem, 4vw)
 	text-align: center
